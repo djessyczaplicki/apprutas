@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ProyectoRutas</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_main">Main Menu</string>
+    <string name="sign_in_pwd">Contraseña</string>
+    <string name="sign_in_email">Correo</string>
+    <string name="sign_in_button">Entrar</string>
+</resources>
