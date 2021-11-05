@@ -13,11 +13,11 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.R
  * Requires a Context and a GoogleMap, in which it will be shown by default.
  */
 class Route(
-    private var context : Context,
-    var mMap : GoogleMap,
+    //private var context : Context? = null,
+    var mMap : GoogleMap? = null,
     var id : Int = 0,
     var name : String = "Ruta 0",
-    var color : Int = context.getColor(R.color.middle_blue_green),
+    var color : Int = -16777216, // black
     var cords : MutableList<LatLng> = mutableListOf()
 ){
     private val TAG = "Classes.Route"
@@ -27,7 +27,7 @@ class Route(
 
     init {
         addCordToRoute(cords)
-        setRouteColor(color)
+        //setRouteColor(color)
         addToMap()
     }
 
@@ -39,10 +39,12 @@ class Route(
     fun addToMap() {
         // Borrar el antiguo polyline si ya estaba en el mapa (Singleton)
         if (addedToMap) polyline.remove()
-        polyline = mMap.addPolyline(polylineOptions)
-        polyline.startCap = RoundCap()
-        polyline.endCap =  RoundCap() // CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.arrow2), 16F)
-        addedToMap = true
+        if (mMap != null){
+            polyline = mMap!!.addPolyline(polylineOptions)
+            polyline.startCap = RoundCap()
+            polyline.endCap =  RoundCap() // CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.arrow2), 16F)
+            addedToMap = true
+        }
     }
 
     fun addCordToRoute(newCords: MutableList<LatLng>) {

@@ -5,4 +5,7 @@
     <string name="sign_in_pwd">Contraseña</string>
     <string name="sign_in_email">Correo</string>
     <string name="sign_in_button">Entrar</string>
+    <string name="username">username</string>
+    <string name="route_name">Route Name</string>
+    <string name="plus_sign">+</string>
 </resources>
