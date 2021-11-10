@@ -4,29 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/french_bistre">
+    android:background="@color/french_bistre"
+    tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/postRecView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="80dp"/>
+        android:layout_marginBottom="80dp">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="enterAlways">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginHorizontal="30dp"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/logo_white" />
+
+            </Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postRecView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/charcoal"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/logout" />
+
         <Button
             android:id="@+id/buttonNewPost"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:text="@string/plus_sign"
             android:layout_gravity="center"
+            android:background="@color/charcoal"
             android:onClick="onClickButtonNewPost"
-            android:background="@color/charcoal" />
+            android:text="@string/plus_sign" />
+
+        <Button
+            android:id="@+id/userButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/usuario" />
     </Toolbar>
 </androidx.constraintlayout.widget.ConstraintLayout>

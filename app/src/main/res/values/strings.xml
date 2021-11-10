@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProyectoRutas</string>
+    <string name="app_name">App Rutas</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_main">Main Menu</string>
     <string name="sign_in_pwd">Contraseña</string>
@@ -8,4 +8,23 @@
     <string name="username">username</string>
     <string name="route_name">Route Name</string>
     <string name="plus_sign">+</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="password">Password</string>
+    <string name="volver">Volver</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="logout">logout</string>
+    <string name="routemap">RouteMap</string>
+    <string name="activity_user_phone">Teléfono</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido1">Apellido1</string>
+    <string name="apellido2">Apellido2</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="address">Dirección</string>
+    <string name="guardar">Guardar</string>
+    <string name="obtener">Obtener</string>
+    <string name="borrar">Borrar Datos</string>
+    <string name="fecha_de_nacimiento">Fecha de nacimiento</string>
+    <string name="usuario">Usuario</string>
+    <string name="send">Send</string>
 </resources>

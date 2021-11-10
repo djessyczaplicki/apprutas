@@ -4,31 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignIn"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SignInActivity">
 
     <EditText
         android:id="@+id/signInEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="email,emailAddress"
         android:ems="10"
         android:hint="@string/sign_in_email"
-        android:inputType="textEmailAddress"
-        android:autofillHints="email,emailAddress" />
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/signInPwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="password"
         android:ems="10"
         android:hint="@string/sign_in_pwd"
         android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:autofillHints="password"/>
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sign_in_button" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register" />
 </LinearLayout>

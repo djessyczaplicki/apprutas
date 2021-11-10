@@ -10,7 +10,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivitySignInBinding
 
-class SignIn : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignInBinding
     private val TAG: String = "AccesoFirebase"
@@ -30,6 +30,11 @@ class SignIn : AppCompatActivity() {
                 return@setOnClickListener
             }
             signIn(email, pwd)
+        }
+
+        binding.registerButton.setOnClickListener{
+            startActivity(Intent(this, RegisterActivity::class.java))
+
         }
     }
 
@@ -64,4 +69,6 @@ class SignIn : AppCompatActivity() {
             Intent(this,MainActivity::class.java)
         )
     }
+
+
 }

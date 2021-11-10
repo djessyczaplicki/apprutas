@@ -20,17 +20,10 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.fragment.MapsFragment
 class NewPostActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityNewPostBinding
-    private lateinit var fragment: MapsFragment
+    private lateinit var supportMapFragment: SupportMapFragment
+    private lateinit var mapFragment: MapsFragment
 
-    private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
-    private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
-    private val LOCATION_PERMISSION_REQUEST_CODE = 0
 
-    private var mLocationPermissionsGranted = false
-
-    companion object {
-        const val REQUEST_CODE_LOCATION = 0
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,54 +36,22 @@ class NewPostActivity : AppCompatActivity() {
 
 
     private fun createMapFragment() {
-        val mapFragment = SupportMapFragment.newInstance()
+        supportMapFragment = SupportMapFragment.newInstance()
         supportFragmentManager
             .beginTransaction()
-            .add(binding.mapFragment.id, mapFragment)
+            .add(binding.newPostMapFragment.id, supportMapFragment)
             .commit()
 
-        mapFragment.getMapAsync(MapsFragment(this))
+        mapFragment = MapsFragment(this)
+        supportMapFragment.getMapAsync(mapFragment)
     }
 
     fun onClickButtonAddCheckpoint(view : View) {
-        fragment.addCheckpoint()
+        mapFragment.addCheckpoint()
     }
 
-
-    private fun getLocationPermission() {
-        val permissions = arrayOf(FINE_LOCATION, COARSE_LOCATION)
-
-        if (ContextCompat.checkSelfPermission(applicationContext, FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(applicationContext, COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mLocationPermissionsGranted = true
-            } else {
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE)
-            }
-        }
+    fun onClickButtonAddMarker(view : View) {
+        mapFragment.addMarker()
     }
 
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        mLocationPermissionsGranted = false;
-
-        when(requestCode) {
-            LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty()) {
-                    for (i in 0..grantResults.size) {
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED){
-                            mLocationPermissionsGranted = false
-                            return
-                        }
-                    }
-                    mLocationPermissionsGranted = true
-
-                }
-            }
-        }
-    }
 }

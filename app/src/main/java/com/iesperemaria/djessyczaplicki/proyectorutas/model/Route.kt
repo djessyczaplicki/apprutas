@@ -14,37 +14,49 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.R
  */
 class Route(
     //private var context : Context? = null,
-    var mMap : GoogleMap? = null,
+    map : GoogleMap? = null,
     var id : Int = 0,
     var name : String = "Ruta 0",
     var color : Int = -16777216, // black
     var cords : MutableList<LatLng> = mutableListOf()
 ){
     private val TAG = "Classes.Route"
+    val gmaps : MutableList<GoogleMap> = mutableListOf()
     val polylineOptions = PolylineOptions()
-    lateinit var polyline: Polyline
-    var addedToMap = false
+    var polylines : MutableList<Polyline> = mutableListOf()
 
     init {
+        if (map != null) addToMap(map)
         addCordToRoute(cords)
         //setRouteColor(color)
-        addToMap()
     }
+
+
 
     fun setRouteColor(color: Int) {
         polylineOptions.color(color)
-        addToMap()
+        updateMaps()
     }
 
-    fun addToMap() {
-        // Borrar el antiguo polyline si ya estaba en el mapa (Singleton)
-        if (addedToMap) polyline.remove()
-        if (mMap != null){
-            polyline = mMap!!.addPolyline(polylineOptions)
-            polyline.startCap = RoundCap()
-            polyline.endCap =  RoundCap() // CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.arrow2), 16F)
-            addedToMap = true
+    fun updateMaps() {
+        // Reset polylines list
+        polylines = mutableListOf()
+        for (i in 0 until gmaps.size) {
+            addPolylineToMap(gmaps[i], i)
         }
+    }
+
+    fun addPolylineToMap(map : GoogleMap, i : Int) {
+        polylines.add(map.addPolyline(polylineOptions))
+        polylines[i].startCap = RoundCap()
+        polylines[i].endCap = RoundCap()
+    }
+
+    fun addToMap(map : GoogleMap) {
+        gmaps.add(map)
+        val index = polylines.size
+        addPolylineToMap(map, index)
+         // CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.arrow2), 16F)
     }
 
     fun addCordToRoute(newCords: MutableList<LatLng>) {
@@ -53,11 +65,20 @@ class Route(
             cords.add(newCords[i])
             polylineOptions.add(newCords[i])
         }
-        addToMap()
+        updateMaps()
     }
 
-    fun removeFromMap() {
-        // Posible issues: remove() might remove the polyline data too
-        polyline.remove()
+    /**
+     * Removes a Route/Polyline from a map.
+     *
+     * @return false if the route isn't on the specified map.
+     */
+    fun removeFromMap(map : GoogleMap) : Boolean{
+        if (!gmaps.contains(map)) return false
+        val index = gmaps.indexOf(map)
+        // Possible issues: remove() might remove the polyline data too
+        polylines[index].remove()
+        gmaps.remove(map)
+        return true
     }
 }

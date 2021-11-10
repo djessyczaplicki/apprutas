@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp"
+    tools:context=".UserActivity">
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/example_gmail_com"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="username"
+        android:hint="@string/nombre_de_usuario"
+        android:inputType="textPersonName" />
+
+
+    <EditText
+        android:id="@+id/nameEditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="name"
+        android:hint="@string/nombre"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/surname1EditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="surname"
+        android:ems="10"
+        android:hint="@string/apellido1"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/surname2EditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="surname2"
+        android:ems="10"
+        android:hint="@string/apellido2"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/birthdayEditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="birthday"
+        android:inputType="date"
+        android:hint="@string/fecha_de_nacimiento" />
+
+    <EditText
+        android:id="@+id/addressEditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="postalAddress"
+        android:ems="10"
+        android:hint="@string/address"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/phoneEditText"
+        style="@style/goodEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="phone"
+        android:ems="10"
+        android:hint="@string/activity_user_phone"
+        android:inputType="phone" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/red"
+        android:text="@string/borrar" />
+
+
+</LinearLayout>
