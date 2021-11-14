@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.PolyUtil
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
+import java.util.function.ToDoubleBiFunction
 
 
 /**
@@ -15,7 +17,7 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.R
 class Route(
     //private var context : Context? = null,
     map : GoogleMap? = null,
-    var id : Int = 0,
+    var id : String = "0",
     var name : String = "Ruta 0",
     var color : Int = -16777216, // black
     var cords : MutableList<LatLng> = mutableListOf()
@@ -52,11 +54,17 @@ class Route(
         polylines[i].endCap = RoundCap()
     }
 
-    fun addToMap(map : GoogleMap) {
+    fun addToMap(map : GoogleMap) : Boolean {
+        if (gmaps.contains(map)) return false
         gmaps.add(map)
         val index = polylines.size
         addPolylineToMap(map, index)
          // CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.arrow2), 16F)
+        return true
+    }
+
+    fun encodePolyline(i : Int) : String {
+        return PolyUtil.encode(cords)
     }
 
     fun addCordToRoute(newCords: MutableList<LatLng>) {
@@ -73,12 +81,25 @@ class Route(
      *
      * @return false if the route isn't on the specified map.
      */
-    fun removeFromMap(map : GoogleMap) : Boolean{
+    fun removeFromMap(map : GoogleMap) : Boolean {
         if (!gmaps.contains(map)) return false
         val index = gmaps.indexOf(map)
         // Possible issues: remove() might remove the polyline data too
         polylines[index].remove()
         gmaps.remove(map)
         return true
+    }
+
+    fun getMiddleCords() : LatLng {
+        return cords[cords.size/2]
+    }
+
+
+    fun getBounds() : LatLngBounds{
+        val builder = LatLngBounds.Builder()
+        for (cord in cords) {
+            builder.include(cord)
+        }
+        return builder.build()
     }
 }

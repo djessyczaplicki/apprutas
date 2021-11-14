@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivityUserBinding
 
@@ -52,7 +53,7 @@ class UserActivity : AppCompatActivity() {
                 ).addOnSuccessListener {
                     Toast.makeText(this, "Guardado.", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
-                    Toast.makeText(this, "Error:$it", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()
                     it.printStackTrace()
                 }
         }

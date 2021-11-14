@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/french_bistre">
+    tools:context=".DynmapActivity">
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -14,24 +15,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Toolbar
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"
+
                 android:layout_marginHorizontal="30dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@drawable/logo_white" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:text="@string/submit"
-                android:onClick="onClickButtonSend"/>
 
         </Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -44,29 +39,5 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_height="60dp"
-        android:onClick="onClickButtonAddMarker"
-        android:text="Marker"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button2"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="30dp"
-        android:onClick="onClickButtonAddCheckpoint"
-        android:text="Add Checkpoint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

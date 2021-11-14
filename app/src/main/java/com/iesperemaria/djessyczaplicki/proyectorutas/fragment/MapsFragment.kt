@@ -2,19 +2,16 @@ package com.iesperemaria.djessyczaplicki.proyectorutas.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,8 +22,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.iesperemaria.djessyczaplicki.proyectorutas.NewPostActivity
+import com.google.android.material.snackbar.Snackbar
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 
@@ -34,9 +32,9 @@ class MapsFragment(
     val mContext : AppCompatActivity
 ) : SupportMapFragment(), OnMapReadyCallback {
 
+    private val LOCATION_PERMISSION_REQUEST_CODE = 0
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
-    private val LOCATION_PERMISSION_REQUEST_CODE = 0
 
     private var mLocationPermissionsGranted = false
 
@@ -44,8 +42,10 @@ class MapsFragment(
         const val REQUEST_CODE_LOCATION = 0
     }
 
+
+
     val routes : MutableList<Route> = mutableListOf()
-    var route : Route? = null
+    var newRoute : Route? = null
     lateinit var mMap : GoogleMap
 
     override fun onCreateView(
@@ -56,13 +56,23 @@ class MapsFragment(
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 //        createMarker()
         Log.i("MapsFragment", "Map is ready!")
 //        createPolylines()
-        reloadRoutes()
+        if (routes.isNotEmpty()) {
+            reloadRoutes()
+        } else {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 18f))
+                }
+        }
         getLocationPermission()
+
         Toast.makeText(mContext, "Mapa Cargado!", Toast.LENGTH_SHORT).show()
 //        mMap.isTrafficEnabled = true
     }
@@ -85,12 +95,12 @@ class MapsFragment(
             .addOnSuccessListener {
                     location : Location ->
                 run {
-                    if (route == null) {
-                        route = Route(mMap, cords = mutableListOf(LatLng(location.latitude, location.longitude)))
-                        routes.add(route!!)
+                    if (newRoute == null) {
+                        newRoute = Route(mMap, cords = mutableListOf(LatLng(location.latitude, location.longitude)))
+                        routes.add(newRoute!!)
                         Toast.makeText(mContext, "New route created!", Toast.LENGTH_SHORT).show()
                     } else {
-                        route!!.addCordToRoute(mutableListOf(LatLng(location.latitude, location.longitude)))
+                        newRoute!!.addCordToRoute(mutableListOf(LatLng(location.latitude, location.longitude)))
                     }
                 }
             }
@@ -99,15 +109,34 @@ class MapsFragment(
 
     fun addRoute(r : Route) : Boolean {
         if (routes.contains(r)) return false
-        if (::mMap.isInitialized) reloadRoutes()
         routes.add(r)
+        if (::mMap.isInitialized) reloadRoutes()
         return true
     }
 
+
     private fun reloadRoutes() {
+        // The builder is used for the camera zoom, to get the bounds of the screen that has to
+        // be shown to see every route of the map
+        if (routes.isEmpty()) return
+        var builder = LatLngBounds.Builder()
         for (route in routes) {
             route.addToMap(mMap)
+            builder = addToBoundsBuilder(route, builder)
         }
+        val bounds = builder.build()
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300))
+    }
+
+    /**
+     * This method takes all the cords of a route, and add them to a LatLng.Builder instance
+     * to determine the bounds of the route.
+     */
+    private fun addToBoundsBuilder(route: Route, builder: LatLngBounds.Builder) : LatLngBounds.Builder {
+        for (cord in route.cords) {
+            builder.include(cord)
+        }
+        return builder
     }
 
     private fun createPolylines() {
@@ -147,6 +176,8 @@ class MapsFragment(
 //        route.removeFromMap()
     }
 
+
+
     // Location Permissions
     private fun getLocationPermission() {
         val permissions = arrayOf(FINE_LOCATION, COARSE_LOCATION)
@@ -185,7 +216,7 @@ class MapsFragment(
         }
     }
 
-
+/////////////////////////////////// old ->
 
 //    private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
 //        requireContext(), Manifest.permission.ACCESS_FINE_LOCATION

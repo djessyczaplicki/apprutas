@@ -22,6 +22,7 @@ class SignInActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+
         binding.signInButton.setOnClickListener {
             val email = binding.signInEmail.text.toString()
             val pwd = binding.signInPwd.text.toString()
@@ -36,6 +37,10 @@ class SignInActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
 
         }
+    }
+
+    override fun onBackPressed() {
+        // Override on back pressed so nothing happens
     }
 
     public override fun onStart() {

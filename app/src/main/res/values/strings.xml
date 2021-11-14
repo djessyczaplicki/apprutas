@@ -13,7 +13,7 @@
     <string name="volver">Volver</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="logout">logout</string>
+    <string name="logout">Logout</string>
     <string name="routemap">RouteMap</string>
     <string name="activity_user_phone">Teléfono</string>
     <string name="nombre">Nombre</string>
@@ -27,4 +27,12 @@
     <string name="fecha_de_nacimiento">Fecha de nacimiento</string>
     <string name="usuario">Usuario</string>
     <string name="send">Send</string>
+    <string name="from_user">from: User</string>
+    <string name="submit">Submit</string>
+    <string name="like">Like</string>
+    <string name="loading_error">Couldn\'t update data, double check if you have connection.</string>
+    <string name="likes_count_default">0 likes</string>
+    <string name="remove_post">Remove post</string>
+    <string name="new_post">New Post</string>
+    <string name="user">User</string>
 </resources>
