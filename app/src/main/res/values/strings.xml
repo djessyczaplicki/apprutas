@@ -35,4 +35,15 @@
     <string name="remove_post">Remove post</string>
     <string name="new_post">New Post</string>
     <string name="user">User</string>
+    <string name="delete_post">Delete Post</string>
+    <string name="dialog_delete_post">Are you sure you want to delete this post ?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_create_post">Is your post ready to be sent ?</string>
+    <string name="map_type">Map Type</string>
+    <string name="satellite">Satellite</string>
+    <string name="map">Map</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="default_cords">0.123456, 9.321654</string>
+    <string name="remove_cord">Remove Cords</string>
 </resources>

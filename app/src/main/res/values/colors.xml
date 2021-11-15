@@ -15,5 +15,6 @@
     <color name="middle_blue_purple">#FF8D86C9</color>
     <color name="dark_blue_purple">#FF7A72C0</color>
     <color name="light_grey">#FFAEAEAE</color>
+    <color name="grey">#FF454545</color>
     <color name="red">#FFCC3322</color>
 </resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/remove"
+            android:layout_marginHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:layout_width="48dp"
+            android:layout_gravity="start"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_action_cancel"
+            android:contentDescription="@string/remove_cord"
+            android:backgroundTint="@color/charcoal"/>
+        <TextView
+            android:id="@+id/latlng"
+            android:layout_marginHorizontal="65dp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:text="@string/default_cords"/>
+        <ImageView
+            android:id="@+id/move"
+            android:layout_marginHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:layout_width="48dp"
+            android:layout_gravity="end"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_action_drag"
+            android:contentDescription="@string/remove_cord"
+            android:backgroundTint="@color/charcoal"/>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

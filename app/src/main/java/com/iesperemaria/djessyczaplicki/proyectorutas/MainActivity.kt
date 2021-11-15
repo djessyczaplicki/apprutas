@@ -6,8 +6,6 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -17,17 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iesperemaria.djessyczaplicki.proyectorutas.adapter.PostAdapter
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivityMainBinding
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Post
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.android.gms.maps.model.*
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.User
 
@@ -39,14 +33,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
     private lateinit var postRecView : RecyclerView
+    private var mapType = "roadmap"
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
 
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
-        ) {
-                isGranted: Boolean ->
+        ) { isGranted: Boolean ->
             if(isGranted) {
                 Log.i("Permission: " , "Granted")
             } else {
@@ -68,14 +62,42 @@ class MainActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         val user = auth.currentUser
 
-        enableClickEventListeners()
+        enableEventListeners()
         // Recycler View
         postRecView = binding.postRecView
         postRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        binding.swipeRefresh.isRefreshing = true
+
+        generatePosts()
     }
 
-    private fun enableClickEventListeners() {
+    private fun enableEventListeners() {
+        binding.swipeRefresh.setOnRefreshListener { generatePosts() }
+        // Method to enable and disable the swipeRefresh
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.postRecView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    binding.swipeRefresh.isEnabled = (verticalOffset == 0 && binding.postRecView.computeVerticalScrollOffset() == 0)
+                }
+            })
+        })
+        binding.swipeRefresh.setProgressViewOffset(true, 130, 200)
         binding.logoutMenuBtn.setOnClickListener { signOut() }
+        binding.mapTypeButton.setOnClickListener {
+            binding.swipeRefresh.isRefreshing = true
+            val mapTypes = listOf("roadmap", "hybrid", "satellite")
+            val newMapTypeIndex = (mapTypes.indexOf(mapType) + 1) % mapTypes.size
+            mapType = mapTypes[newMapTypeIndex]
+            db.collection("users").document(auth.currentUser!!.email!!)
+                .update(
+                    hashMapOf(
+                        "mapType" to mapType
+                    ) as Map<String, Any>
+                ).addOnSuccessListener {
+                    generatePosts()
+                }
+
+        }
         binding.newPostMenuBtn.setOnClickListener {
             startActivity(Intent(this, NewPostActivity::class.java))
         }
@@ -88,7 +110,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         requestPermission()
-        generatePosts()
     }
 
     private fun signOut() {
@@ -111,14 +132,13 @@ class MainActivity : AppCompatActivity() {
                     cordsList.forEach { index ->
                         cords.add(LatLng(index["latitude"]!!, index["longitude"]!!))
                     }
-                    routes.add(Route(name = name,color = color,cords = cords, id = doc.id))
+                    routes.add(Route(name = name,color = color,newCords = cords, id = doc.id))
                     Log.i(TAG, "routes set")
                 }
                 // get posts
                 db.collection("posts")
                     .get().addOnSuccessListener { postsColl ->
                         for (doc in postsColl.documents) {
-                            Log.i(TAG, "And another one!")
                             val routeId = doc.getString("route")
                             val owner = doc.getString("owner") ?: "default"
                             val likes = doc.get("likes") as MutableList<String>
@@ -131,14 +151,15 @@ class MainActivity : AppCompatActivity() {
                             .get().addOnSuccessListener { usersColl ->
                                 for (doc in usersColl.documents) {
                                     val email = doc.id
-                                    val address = doc.getString("address")!!
-                                    val birthday = doc.getString("birthday")!!
-                                    val name = doc.getString("name")!!
-                                    val phone = doc.getString("phone")!!
-                                    val surname = doc.getString("surname")!!
-                                    val surname2 = doc.getString("surname2")!!
-                                    val username = doc.getString("username")!!
-                                    users.add(User(email, address, birthday, name, phone, surname, surname2, username))
+                                    val address = doc.getString("address") ?: ""
+                                    val birthday = doc.getString("birthday") ?: ""
+                                    val name = doc.getString("name") ?: ""
+                                    val phone = doc.getString("phone") ?: ""
+                                    val surname = doc.getString("surname") ?: ""
+                                    val surname2 = doc.getString("surname2") ?: ""
+                                    val username = doc.getString("username") ?: "default"
+                                    val mapType = doc.get("mapType") as String? ?: "roadmap"
+                                    users.add(User(email, address, birthday, name, phone, surname, surname2, username, mapType))
                                 }
                                 Log.i(TAG, "users set")
 
@@ -146,18 +167,19 @@ class MainActivity : AppCompatActivity() {
                                     // Search for the owner in the users list, if the user isn't in the list, the value doesn't change
                                     post.ownerUsername = users.find{it.email == post.owner}?.username ?: post.ownerUsername
                                 }
-
-                                binding.loadingPanel.visibility = View.GONE
-                                val postAdapter = PostAdapter(posts, this)
-                                Log.i(TAG, "all set¿?" + posts.size)
+                                mapType = users.find { it.email == auth.currentUser!!.email }!!.mapType
+                                binding.swipeRefresh.isRefreshing = false
+                                val postAdapter = PostAdapter(posts, this, mapType)
 
                                 postRecView.adapter = postAdapter
                         }
 
                     }.addOnFailureListener {
+                        binding.swipeRefresh.isRefreshing = false
                         Toast.makeText(this, R.string.loading_error, Toast.LENGTH_LONG).show()
                     }
             }.addOnFailureListener {
+                binding.swipeRefresh.isRefreshing = false
                 Toast.makeText(this, R.string.loading_error, Toast.LENGTH_LONG).show()
             }
     }

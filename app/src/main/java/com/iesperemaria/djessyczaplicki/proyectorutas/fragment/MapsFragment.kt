@@ -10,8 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,12 +22,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.Snackbar
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 
 class MapsFragment(
-    val mContext : AppCompatActivity
+    private val mContext : AppCompatActivity
 ) : SupportMapFragment(), OnMapReadyCallback {
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 0
@@ -37,15 +34,9 @@ class MapsFragment(
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
 
     private var mLocationPermissionsGranted = false
-
-    companion object {
-        const val REQUEST_CODE_LOCATION = 0
-    }
-
-
-
+    lateinit var newRoute : Route
     val routes : MutableList<Route> = mutableListOf()
-    var newRoute : Route? = null
+
     lateinit var mMap : GoogleMap
 
     override fun onCreateView(
@@ -60,6 +51,9 @@ class MapsFragment(
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 //        createMarker()
+        newRoute = Route(mMap)
+        routes.add(newRoute)
+        mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
         Log.i("MapsFragment", "Map is ready!")
 //        createPolylines()
         if (routes.isNotEmpty()) {
@@ -72,8 +66,6 @@ class MapsFragment(
                 }
         }
         getLocationPermission()
-
-        Toast.makeText(mContext, "Mapa Cargado!", Toast.LENGTH_SHORT).show()
 //        mMap.isTrafficEnabled = true
     }
 
@@ -95,13 +87,7 @@ class MapsFragment(
             .addOnSuccessListener {
                     location : Location ->
                 run {
-                    if (newRoute == null) {
-                        newRoute = Route(mMap, cords = mutableListOf(LatLng(location.latitude, location.longitude)))
-                        routes.add(newRoute!!)
-                        Toast.makeText(mContext, "New route created!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        newRoute!!.addCordToRoute(mutableListOf(LatLng(location.latitude, location.longitude)))
-                    }
+                    newRoute.addCords(mutableListOf(LatLng(location.latitude, location.longitude)))
                 }
             }
 
@@ -139,42 +125,42 @@ class MapsFragment(
         return builder
     }
 
-    private fun createPolylines() {
-
-        val listaCords = mutableListOf(
-            LatLng(38.641889, 0.051662),
-            LatLng(38.641914, 0.052193),
-            LatLng(38.641987, 0.053129),
-            LatLng(38.642356, 0.053853),
-            LatLng(38.641937, 0.055760)
-        )
-
-        val route = Route( mMap, cords = listaCords) // requireContext(),
-        route.addToMap(mMap)
-        route.addCordToRoute(mutableListOf(LatLng(38.642050, 0.059450)))
-        route.setRouteColor(mContext.getColor(R.color.old_rose))
-
-        val listaCords2 = mutableListOf(
-            LatLng(38.554139465112, -0.12599945068359375),
-            LatLng(38.55309907775221, -0.1297760009765625),
-            LatLng(38.552964833125216, -0.13629913330078125),
-            LatLng(38.5521593600993, -0.14110565185546875),
-            LatLng(38.54960863598394, -0.1480579376220703),
-            LatLng(38.54692356547259, -0.15488147735595703),
-            LatLng(38.54353352075651, -0.1622629165649414),
-            LatLng(38.53729004998249, -0.1719188690185547),
-            LatLng(38.53668581437226, -0.17286300659179688),
-            LatLng(38.53802855328022, -0.17354965209960938),
-            LatLng(38.53839780208588, -0.17406463623046875),
-            LatLng(38.53856144583678, -0.17405927181243896),
-            LatLng(38.53859920972644, -0.17468154430389404),
-            LatLng(38.538494309984, -0.17587780952453613)
-        )
-
-        val route2 = Route(mMap, cords = listaCords2, color = mContext.getColor(R.color.black))
-        route2.addToMap(mMap)
-//        route.removeFromMap()
-    }
+//    private fun createPolylines() {
+//
+//        val listaCords = mutableListOf(
+//            LatLng(38.641889, 0.051662),
+//            LatLng(38.641914, 0.052193),
+//            LatLng(38.641987, 0.053129),
+//            LatLng(38.642356, 0.053853),
+//            LatLng(38.641937, 0.055760)
+//        )
+//
+//        val route = Route( mMap, newCords = listaCords) // requireContext(),
+//        route.addToMap(mMap)
+//        route.addCordToRoute(mutableListOf(LatLng(38.642050, 0.059450)))
+//        route.setRouteColor(mContext.getColor(R.color.old_rose))
+//
+//        val listaCords2 = mutableListOf(
+//            LatLng(38.554139465112, -0.12599945068359375),
+//            LatLng(38.55309907775221, -0.1297760009765625),
+//            LatLng(38.552964833125216, -0.13629913330078125),
+//            LatLng(38.5521593600993, -0.14110565185546875),
+//            LatLng(38.54960863598394, -0.1480579376220703),
+//            LatLng(38.54692356547259, -0.15488147735595703),
+//            LatLng(38.54353352075651, -0.1622629165649414),
+//            LatLng(38.53729004998249, -0.1719188690185547),
+//            LatLng(38.53668581437226, -0.17286300659179688),
+//            LatLng(38.53802855328022, -0.17354965209960938),
+//            LatLng(38.53839780208588, -0.17406463623046875),
+//            LatLng(38.53856144583678, -0.17405927181243896),
+//            LatLng(38.53859920972644, -0.17468154430389404),
+//            LatLng(38.538494309984, -0.17587780952453613)
+//        )
+//
+//        val route2 = Route(mMap, newCords = listaCords2, color = mContext.getColor(R.color.black))
+//        route2.addToMap(mMap)
+////        route.removeFromMap()
+//    }
 
 
 

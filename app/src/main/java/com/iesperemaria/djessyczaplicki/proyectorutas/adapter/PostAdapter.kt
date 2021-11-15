@@ -11,8 +11,10 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.iesperemaria.djessyczaplicki.proyectorutas.DynmapActivity
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
 import com.iesperemaria.djessyczaplicki.proyectorutas.animation.BounceInterpolator
@@ -21,8 +23,9 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.model.Post
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 
 class PostAdapter(
-    private var postList : MutableList<Post>,
-    private val mContext : Context
+    private var postList: MutableList<Post>,
+    private val mContext: Context,
+    private val mapType: String
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
 
@@ -32,7 +35,7 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(postList[position])
+        holder.bind(postList[position], mapType)
     }
 
     override fun getItemCount(): Int = postList.size
@@ -44,7 +47,8 @@ class PostAdapter(
         private val mContext: Context
     ) : RecyclerView.ViewHolder(binding.root) {
         val TAG = "PostAdapterViewHolder"
-        fun bind( postItem: Post ) {
+        var isFirstTime = true
+        fun bind( postItem: Post, mapType: String) {
             with(binding) {
                 val auth = FirebaseAuth.getInstance()
                 val db = FirebaseFirestore.getInstance()
@@ -52,12 +56,13 @@ class PostAdapter(
 
                 checkLikeState(postItem, auth, binding)
                 textViewRouteName.text = postItem.route.name
-                textViewUser.setText("from: ${postItem.ownerUsername}")
-                Glide.with(mContext).load(getStaticMapUrl(postItem.route)).into(mapImage)
+                textViewUser.text = "from: ${postItem.ownerUsername}"
+                Glide.with(mContext).load(postItem.route.getStaticMapUrl(mapType, mContext.getString(R.string.google_maps_key))).into(mapImage)
                 mapImage.setOnClickListener{
                     val intent = Intent(mContext, DynmapActivity::class.java)
                     Log.i(TAG, "onclick checked");
                     intent.putExtra("route_id", postItem.route.id)
+                    intent.putExtra("post_id", postItem.id)
                     mContext.startActivity(intent)
                 }
                 likeBtn.setOnClickListener{ toggleLike(postItem, auth, db, binding) }
@@ -76,15 +81,18 @@ class PostAdapter(
                     val interpolator = BounceInterpolator(0.5, 15.0)
                     animation.interpolator = interpolator
                     likeBtn.setImageResource(R.drawable.ic_action_heart)
-                    likeBtn.animation = animation
+                    // I use this line to make the animation happen only when the user interacts with the like btn,
+                    // not on initial loading
+                    if (!isFirstTime) likeBtn.animation = animation
                 } else {
                     val animation : Animation = AnimationUtils.loadAnimation(mContext, R.anim.bounce_reverse_back)
                     val interpolator = BounceInterpolator(0.3, 3.0)
                     animation.interpolator = interpolator
                     likeBtn.setImageResource(R.drawable.ic_action_empty_heart)
-                    likeBtn.animation = animation
+                    if (!isFirstTime) likeBtn.animation = animation
                 }
                 likeCounterTextView.text = "${postItem.likes.size} likes"
+                isFirstTime = false
             }
 
         }
@@ -108,21 +116,6 @@ class PostAdapter(
                 postItem.likes.add(auth.currentUser!!.email!!)
             }
             checkLikeState(postItem, auth, binding)
-        }
-
-        private fun getStaticMapUrl(route: Route): String {
-            val lat = route.getMiddleCords().latitude
-            val lng = route.getMiddleCords().longitude
-//            val color = route.
-            val width = "1000"
-            val height = "515"
-            val encodedPoly = route.encodePolyline(0)
-            val API_KEY = mContext.getString(R.string.google_maps_key)
-            val url =
-                "https://maps.google.com/maps/api/staticmap?center=$lat,$lng" +
-                        "&size=${width}x$height&path=weight:3%7Cenc:$encodedPoly&sensor=true&scale=2&key=$API_KEY"
-            Log.i(TAG, url)
-            return url
         }
 
 

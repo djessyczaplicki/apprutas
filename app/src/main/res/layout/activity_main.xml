@@ -7,67 +7,100 @@
     android:background="@color/french_bistre"
     tools:context=".MainActivity">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="60dp">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            android:theme="@style/Widget.Design.AppBarLayout">
+            android:layout_height="match_parent">
 
-            <Toolbar
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|enterAlways">
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintTop_toTopOf="parent"
+                android:theme="@style/Widget.Design.AppBarLayout">
 
-                <ImageView
-                    android:layout_width="120dp"
+                <Toolbar
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|enterAlways">
 
-                    android:layout_marginHorizontal="30dp"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/logo_white" />
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
 
-            </Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+                        android:layout_marginHorizontal="30dp"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/logo_white" />
 
-        <RelativeLayout
-            android:id="@+id/loadingPanel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+                    <LinearLayout
+                        android:id="@+id/mapTypeButton"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="horizontal">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:indeterminate="true"
-                android:progressTint="@color/white"/>
-        </RelativeLayout>
+                        <ImageView
+                            android:paddingVertical="5dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.5"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_action_map"
+                            android:contentDescription="@string/delete_post"
+                            android:backgroundTint="@color/charcoal"/>
+                        <TextView
+                            android:paddingHorizontal="3dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="@string/map_type"
+                            android:backgroundTint="@color/charcoal"/>
+                    </LinearLayout>
+                </Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/postRecView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/loadingPanel"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
+
+<!--                <ProgressBar-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="40dp"-->
+<!--                    android:indeterminate="true"-->
+<!--                    android:progressTint="@color/white" />-->
+<!--            </RelativeLayout>-->
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/postRecView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/charcoal"
         android:id="@+id/bottom_navigation"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:baselineAligned="false">
         <LinearLayout
             android:orientation="vertical"
 

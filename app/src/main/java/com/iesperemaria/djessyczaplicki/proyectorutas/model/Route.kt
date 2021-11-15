@@ -1,12 +1,9 @@
 package com.iesperemaria.djessyczaplicki.proyectorutas.model
 
-import android.content.Context
 import android.util.Log
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.PolyUtil
-import com.iesperemaria.djessyczaplicki.proyectorutas.R
-import java.util.function.ToDoubleBiFunction
 
 
 /**
@@ -19,36 +16,43 @@ class Route(
     map : GoogleMap? = null,
     var id : String = "0",
     var name : String = "Ruta 0",
-    var color : Int = -16777216, // black
-    var cords : MutableList<LatLng> = mutableListOf()
+    color : Int = -16777216, // black
+    newCords : MutableList<LatLng> = mutableListOf()
 ){
     private val TAG = "Classes.Route"
-    val gmaps : MutableList<GoogleMap> = mutableListOf()
-    val polylineOptions = PolylineOptions()
-    var polylines : MutableList<Polyline> = mutableListOf()
+    var color : Int = -16777216
+        private set
+    val cords : MutableList<LatLng> = mutableListOf()
+    private val gmaps : MutableList<GoogleMap> = mutableListOf()
+    private var polylineOptions = PolylineOptions()
+    private var polylines : MutableList<Polyline> = mutableListOf()
 
     init {
         if (map != null) addToMap(map)
-        addCordToRoute(cords)
-        //setRouteColor(color)
+        // I use "newCords" to add the cords to the map, because otherwise,
+        // they would be added twice to the cords list
+        addCords(newCords)
+        setRouteColor(color)
     }
 
 
 
-    fun setRouteColor(color: Int) {
+    private fun setRouteColor(color: Int) {
+        this.color = color
         polylineOptions.color(color)
         updateMaps()
     }
 
-    fun updateMaps() {
+    private fun updateMaps() {
         // Reset polylines list
         polylines = mutableListOf()
+        // Add route to every map in gmaps list
         for (i in 0 until gmaps.size) {
             addPolylineToMap(gmaps[i], i)
         }
     }
 
-    fun addPolylineToMap(map : GoogleMap, i : Int) {
+    private fun addPolylineToMap(map : GoogleMap, i : Int) {
         polylines.add(map.addPolyline(polylineOptions))
         polylines[i].startCap = RoundCap()
         polylines[i].endCap = RoundCap()
@@ -63,17 +67,33 @@ class Route(
         return true
     }
 
-    fun encodePolyline(i : Int) : String {
+    fun encodePolyline() : String {
         return PolyUtil.encode(cords)
     }
 
-    fun addCordToRoute(newCords: MutableList<LatLng>) {
-        for (i in 0 until newCords.size) {
-            Log.i(TAG, newCords[i].toString())
-            cords.add(newCords[i])
-            polylineOptions.add(newCords[i])
-        }
+    fun addCords(newCords: MutableList<LatLng>) {
+        cords.addAll(newCords)
+        polylineOptions.addAll(newCords)
         updateMaps()
+    }
+
+    fun removeCordsAt(index: Int) {
+        cords.removeAt(index)
+        reloadPolylineOptions()
+
+    }
+
+    fun reloadPolylineOptions() {
+        polylineOptions = PolylineOptions()
+        polylineOptions.addAll(cords)
+        polylineOptions.color(color)
+        updateMaps()
+    }
+
+    fun hexColor() : String {
+        val color = Integer.toHexString(color).uppercase()
+
+        return "0x" + color.substring(2) + color.substring(0,2)
     }
 
     /**
@@ -101,5 +121,19 @@ class Route(
             builder.include(cord)
         }
         return builder.build()
+    }
+
+    fun getStaticMapUrl(mapType: String, API_KEY: String): String {
+        val color = hexColor()
+        val width = "1000"
+        val height = "515"
+        val encodedPoly = encodePolyline()
+
+        val url =
+            "https://maps.google.com/maps/api/staticmap?maptype=$mapType" +
+                    "&size=${width}x$height&path=color:$color%7Cweight:3%7Cenc:$encodedPoly" +
+                    "&sensor=true&scale=2&key=$API_KEY"
+        Log.i(TAG, color)
+        return url
     }
 }

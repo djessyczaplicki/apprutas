@@ -8,5 +8,6 @@ class User(
     var phone : String,
     var surname : String,
     var surname2 : String,
-    var username : String
+    var username : String,
+    var mapType : String
 )
