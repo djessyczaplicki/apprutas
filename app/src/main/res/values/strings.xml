@@ -46,4 +46,7 @@
     <string name="hybrid">Hybrid</string>
     <string name="default_cords">0.123456, 9.321654</string>
     <string name="remove_cord">Remove Cords</string>
+    <string name="marker_default">Here I am!</string>
+    <string name="hold_to_move">Press and hold to move</string>
+    <string name="confirm">Yes</string>
 </resources>

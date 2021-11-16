@@ -47,28 +47,16 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="70dp"
-        android:onClick="onClickButtonAddMarker"
-        android:text="Marker"
-        app:layout_constraintBottom_toBottomOf="@id/newPostMapFragment"
-        app:layout_constraintEnd_toStartOf="@id/button2"
-        app:layout_constraintStart_toStartOf="@id/newPostMapFragment" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginHorizontal="30dp"
+        android:layout_margin="10dp"
         android:onClick="onClickButtonAddCheckpoint"
         android:text="Add Checkpoint"
         app:layout_constraintBottom_toBottomOf="@id/newPostMapFragment"
-        app:layout_constraintEnd_toEndOf="@id/newPostMapFragment"
-        app:layout_constraintStart_toEndOf="@id/button" />
+        app:layout_constraintEnd_toEndOf="@id/newPostMapFragment"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -112,9 +100,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cordsRecView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="530dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/newPostMapFragment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

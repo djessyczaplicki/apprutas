@@ -133,8 +133,8 @@ class MainActivity : AppCompatActivity() {
                         cords.add(LatLng(index["latitude"]!!, index["longitude"]!!))
                     }
                     routes.add(Route(name = name,color = color,newCords = cords, id = doc.id))
-                    Log.i(TAG, "routes set")
                 }
+                Log.i(TAG, "routes set")
                 // get posts
                 db.collection("posts")
                     .get().addOnSuccessListener { postsColl ->
@@ -142,7 +142,9 @@ class MainActivity : AppCompatActivity() {
                             val routeId = doc.getString("route")
                             val owner = doc.getString("owner") ?: "default"
                             val likes = doc.get("likes") as MutableList<String>
-                            posts.add(Post(doc.id, routes.first{it.id == routeId}, owner, owner, likes))
+                            val date = doc.getString("date") ?: "10/10/2021"
+
+                            posts.add(Post(doc.id, routes.first{it.id == routeId}, owner, owner, likes, date))
                         }
                         Log.i(TAG, "posts set")
 

@@ -23,7 +23,7 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.model.Post
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 
 class PostAdapter(
-    private var postList: MutableList<Post>,
+    var postList: MutableList<Post>,
     private val mContext: Context,
     private val mapType: String
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {

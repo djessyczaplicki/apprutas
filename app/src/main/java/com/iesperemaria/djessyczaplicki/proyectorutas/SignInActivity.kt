@@ -34,13 +34,9 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener{
-            startActivity(Intent(this, RegisterActivity::class.java))
-
+            // check data
+            reload()
         }
-    }
-
-    override fun onBackPressed() {
-        // Override on back pressed so nothing happens
     }
 
     public override fun onStart() {
@@ -70,9 +66,8 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun reload() {
-        this.startActivity(
-            Intent(this,MainActivity::class.java)
-        )
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
     }
 
 

@@ -26,6 +26,9 @@ class Route(
     private val gmaps : MutableList<GoogleMap> = mutableListOf()
     private var polylineOptions = PolylineOptions()
     private var polylines : MutableList<Polyline> = mutableListOf()
+    private var markers: MutableList<Marker> = mutableListOf()
+    var lastMarkerPos: LatLng? = null
+    var lastId: Int = -1
 
     init {
         if (map != null) addToMap(map)
@@ -72,18 +75,43 @@ class Route(
     }
 
     fun addCords(newCords: MutableList<LatLng>) {
+        lastId++
         cords.addAll(newCords)
         polylineOptions.addAll(newCords)
+        removePolyFromAllMaps(gmaps)
         updateMaps()
     }
 
-    fun removeCordsAt(index: Int) {
-        cords.removeAt(index)
-        reloadPolylineOptions()
 
+
+    fun removeAllMarkers() {
+        for (marker in markers) {
+            marker.remove()
+        }
+        markers = mutableListOf()
+    }
+
+    fun addMarkerAt(pos: LatLng, text: String) {
+        removeAllMarkers()
+        lastMarkerPos = pos
+        for (map in gmaps) {
+            markers.add(map.addMarker(MarkerOptions().position(LatLng(pos.latitude, pos.longitude)).title("Here I am!"))!!)
+        }
+    }
+
+    fun removeCordsAt(index: Int) {
+        Log.i("RemovedCord", cords.removeAt(index).toString())
+
+        Log.i("---", cords.size.toString())
+        for (cord in cords) {
+            Log.i("Cords", cords.toString())
+        }
+        Log.i("---", "-----")
+        reloadPolylineOptions()
     }
 
     fun reloadPolylineOptions() {
+        removePolyFromAllMaps(gmaps)
         polylineOptions = PolylineOptions()
         polylineOptions.addAll(cords)
         polylineOptions.color(color)
@@ -96,18 +124,35 @@ class Route(
         return "0x" + color.substring(2) + color.substring(0,2)
     }
 
-    /**
-     * Removes a Route/Polyline from a map.
-     *
-     * @return false if the route isn't on the specified map.
-     */
-    fun removeFromMap(map : GoogleMap) : Boolean {
+    fun removePolyFromMap(map: GoogleMap): Boolean {
         if (!gmaps.contains(map)) return false
         val index = gmaps.indexOf(map)
         // Possible issues: remove() might remove the polyline data too
         polylines[index].remove()
+        return true
+    }
+
+    fun removePolyFromAllMaps(maps: MutableList<GoogleMap>) {
+        for (map in maps) {
+            removePolyFromMap(map)
+        }
+    }
+
+    /**
+     * Removes a Route/Polyline from a map, which removes the map from the gmap collection.
+     *
+     * @return false if the route isn't on the specified map.
+     */
+    fun removeMap(map : GoogleMap) : Boolean {
+        removePolyFromMap(map)
         gmaps.remove(map)
         return true
+    }
+
+    fun removeAllMaps(maps: MutableList<GoogleMap>) {
+        for (map in maps) {
+            removeMap(map)
+        }
     }
 
     fun getMiddleCords() : LatLng {

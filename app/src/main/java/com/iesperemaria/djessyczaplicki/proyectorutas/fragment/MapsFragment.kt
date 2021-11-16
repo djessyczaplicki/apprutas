@@ -10,9 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,9 +34,13 @@ class MapsFragment(
     private val LOCATION_PERMISSION_REQUEST_CODE = 0
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
+    companion object {
+        const val REQUEST_CODE_LOCATION = 0
+    }
 
+    private val TAG = "MapsFragment"
     private var mLocationPermissionsGranted = false
-    lateinit var newRoute : Route
+    var newRoute = Route()
     val routes : MutableList<Route> = mutableListOf()
 
     lateinit var mMap : GoogleMap
@@ -49,23 +55,27 @@ class MapsFragment(
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
+        Log.i(TAG, "Map is ready!")
         mMap = googleMap
 //        createMarker()
-        newRoute = Route(mMap)
-        routes.add(newRoute)
+        newRoute.addToMap(mMap)
         mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-        Log.i("MapsFragment", "Map is ready!")
 //        createPolylines()
+        getLocationPermission()
+        var wasCameraSet = false
         if (routes.isNotEmpty()) {
-            reloadRoutes()
-        } else {
+            Log.i(TAG, "routes is not empty" )
+            wasCameraSet = reloadRoutes()
+        }
+        if (!wasCameraSet) {
+            Log.i(TAG, "camera wasn't set" )
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener {
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 18f))
                 }
         }
-        getLocationPermission()
+        routes.add(newRoute)
 //        mMap.isTrafficEnabled = true
     }
 
@@ -74,23 +84,21 @@ class MapsFragment(
     fun addMarker() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
         fusedLocationClient.lastLocation
-            .addOnSuccessListener {
-                    location : Location -> mMap.addMarker(MarkerOptions().position(LatLng(location.latitude, location.longitude)).title("Here I am!"))
+            .addOnSuccessListener { location : Location ->
+                mMap.addMarker(MarkerOptions().position(LatLng(location.latitude, location.longitude)).title("Here I am!"))
             }
 
     }
 
     @SuppressLint("MissingPermission")
-    fun addCheckpoint() {
+    fun addCheckpoint(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
         fusedLocationClient.lastLocation
-            .addOnSuccessListener {
-                    location : Location ->
-                run {
-                    newRoute.addCords(mutableListOf(LatLng(location.latitude, location.longitude)))
-                }
+            .addOnSuccessListener { location : Location ->
+                newRoute.addCords(mutableListOf(LatLng(location.latitude, location.longitude)))
+                adapter.notifyItemInserted(newRoute.cords.size-1)
+                Toast.makeText(mContext, newRoute.cords.size.toString(), Toast.LENGTH_SHORT).show()
             }
-
     }
 
     fun addRoute(r : Route) : Boolean {
@@ -101,17 +109,27 @@ class MapsFragment(
     }
 
 
-    private fun reloadRoutes() {
+    private fun reloadRoutes(): Boolean {
         // The builder is used for the camera zoom, to get the bounds of the screen that has to
         // be shown to see every route of the map
-        if (routes.isEmpty()) return
+        if (routes.isEmpty()) return false
+        // If all of the routes have no set cords, the builder won't work correctly
+        if (routes.fold(mutableListOf<LatLng>()) { acc, elem ->
+                acc.addAll(elem.cords)
+                return@fold acc
+            }.isEmpty()) return false
+
         var builder = LatLngBounds.Builder()
         for (route in routes) {
-            route.addToMap(mMap)
-            builder = addToBoundsBuilder(route, builder)
+            if (route.cords.isNotEmpty()) {
+                route.addToMap(mMap)
+                builder = addToBoundsBuilder(route, builder)
+            }
         }
+        
         val bounds = builder.build()
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300))
+        return true
     }
 
     /**
@@ -124,45 +142,6 @@ class MapsFragment(
         }
         return builder
     }
-
-//    private fun createPolylines() {
-//
-//        val listaCords = mutableListOf(
-//            LatLng(38.641889, 0.051662),
-//            LatLng(38.641914, 0.052193),
-//            LatLng(38.641987, 0.053129),
-//            LatLng(38.642356, 0.053853),
-//            LatLng(38.641937, 0.055760)
-//        )
-//
-//        val route = Route( mMap, newCords = listaCords) // requireContext(),
-//        route.addToMap(mMap)
-//        route.addCordToRoute(mutableListOf(LatLng(38.642050, 0.059450)))
-//        route.setRouteColor(mContext.getColor(R.color.old_rose))
-//
-//        val listaCords2 = mutableListOf(
-//            LatLng(38.554139465112, -0.12599945068359375),
-//            LatLng(38.55309907775221, -0.1297760009765625),
-//            LatLng(38.552964833125216, -0.13629913330078125),
-//            LatLng(38.5521593600993, -0.14110565185546875),
-//            LatLng(38.54960863598394, -0.1480579376220703),
-//            LatLng(38.54692356547259, -0.15488147735595703),
-//            LatLng(38.54353352075651, -0.1622629165649414),
-//            LatLng(38.53729004998249, -0.1719188690185547),
-//            LatLng(38.53668581437226, -0.17286300659179688),
-//            LatLng(38.53802855328022, -0.17354965209960938),
-//            LatLng(38.53839780208588, -0.17406463623046875),
-//            LatLng(38.53856144583678, -0.17405927181243896),
-//            LatLng(38.53859920972644, -0.17468154430389404),
-//            LatLng(38.538494309984, -0.17587780952453613)
-//        )
-//
-//        val route2 = Route(mMap, newCords = listaCords2, color = mContext.getColor(R.color.black))
-//        route2.addToMap(mMap)
-////        route.removeFromMap()
-//    }
-
-
 
     // Location Permissions
     private fun getLocationPermission() {
@@ -201,75 +180,4 @@ class MapsFragment(
             }
         }
     }
-
-/////////////////////////////////// old ->
-
-//    private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
-//        requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-//    ) == PackageManager.PERMISSION_GRANTED
-//
-//    @SuppressLint("MissingPermission")
-//    private fun enableLocation() {
-//        if (!::mMap.isInitialized) return
-//        if (isLocationPermissionGranted()) {
-//            mMap.isMyLocationEnabled = true
-//        } else {
-//            requestLocationPermission()
-//        }
-//    }
-
-//    private fun requestLocationPermission() {
-//        if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                requireActivity(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            )
-//        ) {
-//            Toast.makeText(requireContext(), "Ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
-//        } else {
-//            ActivityCompat.requestPermissions(
-//                requireActivity(),
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                NewPostActivity.REQUEST_CODE_LOCATION
-//            )
-//        }
-//    }
-//
-//    @SuppressLint("MissingPermission")
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            NewPostActivity.REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                mMap.isMyLocationEnabled = true
-//            } else {
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Para activar la localización, ve a ajustes y acepta los permisos",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//            else -> {
-//            }
-//        }
-//    }
-
-
-//
-//    @SuppressLint("MissingPermission")
-//    fun onResumeFragments() {
-//        super.onResumeFragments()
-//        if (!::mMap.isInitialized) return
-//        if (!isLocationPermissionGranted()) {
-//            mMap.isMyLocationEnabled = false
-//            Toast.makeText(
-//                requireContext(),
-//                "Para activar la localización, ve a ajustes y acepta los permisos",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//
-//        }
-//    }
 }

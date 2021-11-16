@@ -10,5 +10,6 @@ data class Post(
     var route : Route,
     var owner : String,
     var ownerUsername : String,
-    val likes : MutableList<String> = mutableListOf()
+    val likes : MutableList<String> = mutableListOf(),
+    var date: String
     )

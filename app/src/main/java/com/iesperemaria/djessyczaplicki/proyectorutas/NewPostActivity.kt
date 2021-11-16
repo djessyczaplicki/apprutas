@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.*
 import com.google.firebase.auth.FirebaseAuth
@@ -15,24 +17,19 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.iesperemaria.djessyczaplicki.proyectorutas.adapter.CordsAdapter
-import com.iesperemaria.djessyczaplicki.proyectorutas.adapter.PostAdapter
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivityNewPostBinding
 import com.iesperemaria.djessyczaplicki.proyectorutas.fragment.MapsFragment
-import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NewPostActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityNewPostBinding
-    private lateinit var supportMapFragment: SupportMapFragment
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
     private lateinit var mapFrag: MapsFragment
     private lateinit var cordsRecView : RecyclerView
-
-
-
+    private lateinit var cordsAdapter: CordsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +37,36 @@ class NewPostActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
+        cordsRecView = binding.cordsRecView
+        cordsRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         createMapFragment()
     }
 
-    private fun setupRecyclerView() {
-        mapFrag.newRoute = Route()
-        val cordsAdapter = CordsAdapter(mapFrag.newRoute,this)
+    private var simpleCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), 0) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            val startPosition = viewHolder.adapterPosition
+            val endPosition = target.adapterPosition
 
+            Collections.swap(mapFrag.newRoute.cords, startPosition, endPosition)
+            recyclerView.adapter?.notifyItemMoved(startPosition, endPosition)
+            mapFrag.newRoute.reloadPolylineOptions()
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        }
+
+    }
+
+    private fun setupRecyclerView() {
+        cordsAdapter = CordsAdapter(mapFrag.newRoute, this)
         cordsRecView.adapter = cordsAdapter
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(cordsRecView)
     }
 
     private fun enableEventListeners() {
@@ -78,7 +97,7 @@ class NewPostActivity : AppCompatActivity() {
                 return activity?.let {
                     val builder = AlertDialog.Builder(it)
                     builder.setMessage(R.string.dialog_create_post)
-                        .setPositiveButton(R.string.delete
+                        .setPositiveButton(R.string.confirm
                         ) { _, _ ->
                             sendNewPost()
                         }
@@ -89,8 +108,7 @@ class NewPostActivity : AppCompatActivity() {
             }
         }
 
-        CustomDialogFragment().show(supportFragmentManager, "DynmapActivity-showDeleteBtn()")
-        sendNewPost()
+        CustomDialogFragment().show(supportFragmentManager, "NewPostActivity-ConfirmCreate")
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -100,7 +118,6 @@ class NewPostActivity : AppCompatActivity() {
         val date = sdf.format(currentTime.time)
 
         val route = mapFrag.newRoute
-            ?: return Toast.makeText(this, "No route created.", Toast.LENGTH_LONG).show()
         val routeDoc = db.collection("routes").document()
         routeDoc.set(
             hashMapOf(
@@ -128,11 +145,12 @@ class NewPostActivity : AppCompatActivity() {
     }
 
     fun onClickButtonAddCheckpoint(view : View) {
-        mapFrag.addCheckpoint()
+        mapFrag.addCheckpoint(cordsRecView.adapter!!)
     }
 
     fun onClickButtonAddMarker(view : View) {
         mapFrag.addMarker()
     }
+
 
 }
