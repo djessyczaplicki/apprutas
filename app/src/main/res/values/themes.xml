@@ -24,6 +24,10 @@
         <item name="android:textColorHint">@color/light_grey</item>
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="Button">
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:backgroundTintMode">multiply</item>
+        <item name="android:background">@drawable/grey_border</item>
+        <item name="android:backgroundTint">@color/old_rose</item>
     </style>
 </resources>

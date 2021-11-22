@@ -13,4 +13,21 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="RoundCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+        <item name="color">@color/white</item>
+    </style>
+
+    <style name="goodEditText" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColorHint">@color/light_grey</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:backgroundTintMode">multiply</item>
+        <item name="android:background">@drawable/grey_border</item>
+        <item name="android:backgroundTint">@color/old_rose</item>
+    </style>
 </resources>

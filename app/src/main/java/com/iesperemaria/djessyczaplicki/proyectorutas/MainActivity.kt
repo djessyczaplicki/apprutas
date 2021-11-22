@@ -29,10 +29,10 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.model.User
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
-    private lateinit var binding : ActivityMainBinding
-    private lateinit var auth : FirebaseAuth
-    private lateinit var db : FirebaseFirestore
-    private lateinit var postRecView : RecyclerView
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var postRecView: RecyclerView
     private var mapType = "roadmap"
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -41,16 +41,12 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if(isGranted) {
-                Log.i("Permission: " , "Granted")
+            if (isGranted) {
+                Log.i("Permission: ", "Granted")
             } else {
                 Log.i("Permission: ", "Denied")
             }
         }
-
-    override fun onBackPressed() {
-        Toast.makeText(this, "You are already on the main menu!", Toast.LENGTH_SHORT).show()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         enableEventListeners()
         // Recycler View
         postRecView = binding.postRecView
-        postRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        postRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.swipeRefresh.isRefreshing = true
 
         generatePosts()
@@ -77,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             binding.postRecView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    binding.swipeRefresh.isEnabled = (verticalOffset == 0 && binding.postRecView.computeVerticalScrollOffset() == 0)
+                    binding.swipeRefresh.isEnabled =
+                        (verticalOffset == 0 && binding.postRecView.computeVerticalScrollOffset() == 0)
                 }
             })
         })
@@ -99,10 +96,12 @@ class MainActivity : AppCompatActivity() {
 
         }
         binding.newPostMenuBtn.setOnClickListener {
-            startActivity(Intent(this, NewPostActivity::class.java))
+            val intent = Intent(this, NewPostActivity::class.java)
+            intent.putExtra("mapType", mapType)
+            startActivity(intent)
         }
         binding.userMenuBtn.setOnClickListener {
-            startActivity(Intent(this, UserActivity::class.java))
+            startActivity(Intent(this, UserEditActivity::class.java))
         }
 
     }
@@ -114,25 +113,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun signOut() {
         Firebase.auth.signOut()
-        startActivity(Intent(this,SignInActivity::class.java))
+        startActivity(Intent(this, SignInActivity::class.java))
         finish()
     }
 
-    private fun generatePosts(){
+    private fun generatePosts() {
         val posts = mutableListOf<Post>()
         val routes = mutableListOf<Route>()
         val users = mutableListOf<User>()
         db.collection("routes")
             .get().addOnSuccessListener { routesColl ->
                 for (doc in routesColl.documents) {
-                    val name = doc.get("name") as String
+                    val name = doc.getString("name") ?: "default"
                     val color = (doc.get("color") as Long).toInt()
-                    val cordsList = doc.get("cords") as ArrayList<HashMap<String,Double>>
+                    val cordsList = doc.get("cords") as ArrayList<HashMap<String, Double>>
                     val cords = mutableListOf<LatLng>()
                     cordsList.forEach { index ->
                         cords.add(LatLng(index["latitude"]!!, index["longitude"]!!))
                     }
-                    routes.add(Route(name = name,color = color,newCords = cords, id = doc.id))
+                    val length = doc.getString("length") ?: "0:00"
+                    routes.add(Route(name = name, color = color, newCords = cords, id = doc.id, length = length))
                 }
                 Log.i(TAG, "routes set")
                 // get posts
@@ -144,7 +144,16 @@ class MainActivity : AppCompatActivity() {
                             val likes = doc.get("likes") as MutableList<String>
                             val date = doc.getString("date") ?: "10/10/2021"
 
-                            posts.add(Post(doc.id, routes.first{it.id == routeId}, owner, owner, likes, date))
+                            posts.add(
+                                Post(
+                                    doc.id,
+                                    routes.first { it.id == routeId },
+                                    owner,
+                                    owner,
+                                    likes,
+                                    date
+                                )
+                            )
                         }
                         Log.i(TAG, "posts set")
 
@@ -161,20 +170,35 @@ class MainActivity : AppCompatActivity() {
                                     val surname2 = doc.getString("surname2") ?: ""
                                     val username = doc.getString("username") ?: "default"
                                     val mapType = doc.get("mapType") as String? ?: "roadmap"
-                                    users.add(User(email, address, birthday, name, phone, surname, surname2, username, mapType))
+                                    users.add(
+                                        User(
+                                            email,
+                                            address,
+                                            birthday,
+                                            name,
+                                            phone,
+                                            surname,
+                                            surname2,
+                                            username,
+                                            mapType
+                                        )
+                                    )
                                 }
                                 Log.i(TAG, "users set")
 
                                 for (post in posts) {
                                     // Search for the owner in the users list, if the user isn't in the list, the value doesn't change
-                                    post.ownerUsername = users.find{it.email == post.owner}?.username ?: post.ownerUsername
+                                    post.ownerUsername =
+                                        users.find { it.email == post.owner }?.username
+                                            ?: post.ownerUsername
                                 }
-                                mapType = users.find { it.email == auth.currentUser!!.email }!!.mapType
+                                mapType =
+                                    users.find { it.email == auth.currentUser!!.email }!!.mapType
                                 binding.swipeRefresh.isRefreshing = false
                                 val postAdapter = PostAdapter(posts, this, mapType)
 
                                 postRecView.adapter = postAdapter
-                        }
+                            }
 
                     }.addOnFailureListener {
                         binding.swipeRefresh.isRefreshing = false
@@ -202,7 +226,9 @@ class MainActivity : AppCompatActivity() {
                 // additional rationale should be displayed
 
                 Snackbar.make(
-                    binding.root,"Please accept the location permissions in order to use the app", Snackbar.LENGTH_LONG
+                    binding.root,
+                    "Please accept the location permissions in order to use the app",
+                    Snackbar.LENGTH_LONG
                 ).show()
                 requestPermissionLauncher.launch(
                     FINE_LOCATION

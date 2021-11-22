@@ -8,17 +8,17 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivityUserBinding
+import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.ActivityUserEditBinding
 
-class UserActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityUserBinding
+class UserEditActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityUserEditBinding
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUserBinding.inflate(layoutInflater)
+        binding = ActivityUserEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth

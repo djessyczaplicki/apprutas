@@ -49,4 +49,11 @@
     <string name="marker_default">Here I am!</string>
     <string name="hold_to_move">Press and hold to move</string>
     <string name="confirm">Yes</string>
+    <string name="route_color">Route Color</string>
+    <string name="route_time">Travel Time</string>
+    <string name="accept">Choose</string>
+    <string name="chose">Chose</string>
+    <string name="no_route_error">You have to create a route first!</string>
+    <string name="route_length">00:00</string>
+    <string name="date_default">21/11/2021</string>
 </resources>

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingVertical="8dp"
-    tools:context=".UserActivity">
+    tools:context=".UserEditActivity">
 
     <TextView
         android:id="@+id/emailTextView"

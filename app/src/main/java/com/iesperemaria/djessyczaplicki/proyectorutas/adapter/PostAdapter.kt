@@ -53,11 +53,13 @@ class PostAdapter(
                 val auth = FirebaseAuth.getInstance()
                 val db = FirebaseFirestore.getInstance()
 
-
                 checkLikeState(postItem, auth, binding)
                 textViewRouteName.text = postItem.route.name
                 textViewUser.text = "from: ${postItem.ownerUsername}"
                 Glide.with(mContext).load(postItem.route.getStaticMapUrl(mapType, mContext.getString(R.string.google_maps_key))).into(mapImage)
+                textViewLength.text = postItem.route.length
+                dateTextView.text = postItem.date
+
                 mapImage.setOnClickListener{
                     val intent = Intent(mContext, DynmapActivity::class.java)
                     Log.i(TAG, "onclick checked");

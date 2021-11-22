@@ -15,10 +15,15 @@ class Route(
     //private var context : Context? = null,
     map : GoogleMap? = null,
     var id : String = "0",
-    var name : String = "Ruta 0",
+    var name : String = DEFAULT_NAME,
     color : Int = -16777216, // black
-    newCords : MutableList<LatLng> = mutableListOf()
+    newCords : MutableList<LatLng> = mutableListOf(),
+    var length : String = DEFAULT_LENGTH
 ){
+    companion object {
+        val DEFAULT_NAME = "Ruta 0"
+        val DEFAULT_LENGTH = "0:00"
+    }
     private val TAG = "Classes.Route"
     var color : Int = -16777216
         private set
@@ -40,7 +45,7 @@ class Route(
 
 
 
-    private fun setRouteColor(color: Int) {
+    fun setRouteColor(color: Int) {
         this.color = color
         polylineOptions.color(color)
         updateMaps()

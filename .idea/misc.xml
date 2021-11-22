@@ -4,22 +4,27 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/grey_border.xml" value="0.21458333333333332" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/round_border.xml" value="0.12604166666666666" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/round_borders.xml" value="0.21458333333333332" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/round_rect.xml" value="0.19780701754385965" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/thick_grey_border.xml" value="0.403125" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/actividty_main.xml" value="0.21875" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_dynmap.xml" value="0.2" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_map.xml" value="0.18903508771929825" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_maps.xml" value="0.21875" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_new_post.xml" value="0.16" />
-        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_new_post_data.xml" value="0.38697916666666665" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_new_post_data.xml" value="0.33" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_new_user.xml" value="0.33" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_register.xml" value="0.15572916666666667" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_sync_in.xml" value="0.1" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_user.xml" value="0.33" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_user_edit.xml" value="0.38697916666666665" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_user_profile.xml" value="0.38697916666666665" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/cords_item.xml" value="0.19427083333333334" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/fragment_maps.xml" value="0.18903508771929825" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/popup_new_post.xml" value="0.22760416666666666" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/post_item.xml" value="0.33" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/menu/navigation_menu.xml" value="0.19270833333333334" />
       </map>
