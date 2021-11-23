@@ -42,6 +42,7 @@ class MapsFragment(
     private var mLocationPermissionsGranted = false
     var newRoute = Route()
     val routes : MutableList<Route> = mutableListOf()
+    var mapType: String? = null
 
     lateinit var mMap : GoogleMap
 
@@ -59,7 +60,7 @@ class MapsFragment(
         mMap = googleMap
 //        createMarker()
         newRoute.addToMap(mMap)
-        mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        mMap.mapType = getMapType()
 //        createPolylines()
         getLocationPermission()
         var wasCameraSet = false
@@ -108,6 +109,13 @@ class MapsFragment(
         return true
     }
 
+    private fun getMapType(): Int {
+        return when (mapType) {
+            "hybrid" -> GoogleMap.MAP_TYPE_HYBRID
+            "roadmap" -> GoogleMap.MAP_TYPE_NORMAL
+            else -> GoogleMap.MAP_TYPE_SATELLITE
+        }
+    }
 
     private fun reloadRoutes(): Boolean {
         // The builder is used for the camera zoom, to get the bounds of the screen that has to

@@ -29,6 +29,7 @@ class DynmapActivity : AppCompatActivity() {
     private lateinit var routeId: String
     private lateinit var postId: String
     private lateinit var mapFrag: MapsFragment
+    private lateinit var mapType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class DynmapActivity : AppCompatActivity() {
         setContentView(binding.root)
         routeId = intent.getStringExtra("route_id")!!
         postId = intent.getStringExtra("post_id")!!
+        mapType = intent.getStringExtra("map_type")!!
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
         var route : Route
@@ -54,6 +56,7 @@ class DynmapActivity : AppCompatActivity() {
             Log.i("DynmapActivity", id)
             route = Route(name = name,color = color,newCords = cords, id = id)
             createMapFragment(route)
+            mapFrag.mapType = mapType
             if (routeOwner == auth.currentUser?.email)
                 showDeleteBtn()
         }

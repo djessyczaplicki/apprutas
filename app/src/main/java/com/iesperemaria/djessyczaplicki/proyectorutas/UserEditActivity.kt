@@ -33,9 +33,6 @@ class UserEditActivity : AppCompatActivity() {
                 binding.nameEditText.setText(it.get("name") as String?)
                 binding.surname1EditText.setText(it.get("surname") as String?)
                 binding.surname2EditText.setText(it.get("surname2") as String?)
-                binding.birthdayEditText.setText(it.get("birthday") as String?)
-                binding.addressEditText.setText(it.get("address") as String?)
-                binding.phoneEditText.setText(it.get("phone") as String?)
             }
 
         binding.saveButton.setOnClickListener{
@@ -45,10 +42,7 @@ class UserEditActivity : AppCompatActivity() {
                         "username" to binding.usernameEditText.text.toString(),
                         "name" to binding.nameEditText.text.toString(),
                         "surname" to binding.surname1EditText.text.toString(),
-                        "surname2" to binding.surname2EditText.text.toString(),
-                        "birthday" to binding.birthdayEditText.text.toString(),
-                        "address" to binding.addressEditText.text.toString(),
-                        "phone" to binding.phoneEditText.text.toString()
+                        "surname2" to binding.surname2EditText.text.toString()
                     )
                 ).addOnSuccessListener {
                     Toast.makeText(this, "Guardado.", Toast.LENGTH_SHORT).show()

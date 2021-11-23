@@ -50,10 +50,12 @@ class NewPostActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
-        mapType = intent.getStringExtra("mapType")!!
+        mapType = intent.getStringExtra("map_type")!!
+
         cordsRecView = binding.cordsRecView
         cordsRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         createMapFragment()
+        mapFrag.mapType = mapType
     }
 
     private var simpleCallback =

@@ -56,4 +56,9 @@
     <string name="no_route_error">You have to create a route first!</string>
     <string name="route_length">00:00</string>
     <string name="date_default">21/11/2021</string>
+    <string name="invalid_username">The introduced username is empty or already in use.</string>
+    <string name="invalid_password">The introduces password is invalid, it must be at least 6 characters long.</string>
+    <string name="invalid_email">The introduced email is invalid.</string>
+    <string name="non_matching_password">Passwords do not match.</string>
+    <string name="already_used_email">This email is already in use, try signing in instead.</string>
 </resources>

@@ -23,7 +23,11 @@ class SignInActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+        enableEventListeners()
 
+    }
+
+    public fun enableEventListeners() {
         binding.signInButton.setOnClickListener {
             val email = binding.signInEmail.text.toString()
             val pwd = binding.signInPwd.text.toString()
@@ -35,8 +39,7 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener{
-            // check data
-            reload()
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

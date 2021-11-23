@@ -22,6 +22,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.android.gms.maps.model.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.Query
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.User
 
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.newPostMenuBtn.setOnClickListener {
             val intent = Intent(this, NewPostActivity::class.java)
-            intent.putExtra("mapType", mapType)
+            intent.putExtra("map_type", mapType)
             startActivity(intent)
         }
         binding.userMenuBtn.setOnClickListener {
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.i(TAG, "routes set")
                 // get posts
-                db.collection("posts")
+                db.collection("posts").orderBy("date", Query.Direction.DESCENDING)
                     .get().addOnSuccessListener { postsColl ->
                         for (doc in postsColl.documents) {
                             val routeId = doc.getString("route")
@@ -162,24 +163,14 @@ class MainActivity : AppCompatActivity() {
                             .get().addOnSuccessListener { usersColl ->
                                 for (doc in usersColl.documents) {
                                     val email = doc.id
-                                    val address = doc.getString("address") ?: ""
-                                    val birthday = doc.getString("birthday") ?: ""
+                                    val username = doc.getString("username") ?: ""
                                     val name = doc.getString("name") ?: ""
-                                    val phone = doc.getString("phone") ?: ""
-                                    val surname = doc.getString("surname") ?: ""
-                                    val surname2 = doc.getString("surname2") ?: ""
-                                    val username = doc.getString("username") ?: "default"
                                     val mapType = doc.get("mapType") as String? ?: "roadmap"
                                     users.add(
                                         User(
                                             email,
-                                            address,
-                                            birthday,
-                                            name,
-                                            phone,
-                                            surname,
-                                            surname2,
                                             username,
+                                            name,
                                             mapType
                                         )
                                     )
@@ -193,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                                             ?: post.ownerUsername
                                 }
                                 mapType =
-                                    users.find { it.email == auth.currentUser!!.email }!!.mapType
+                                    users.find { it.email == auth.currentUser!!.email }?.mapType ?: "roadmap"
                                 binding.swipeRefresh.isRefreshing = false
                                 val postAdapter = PostAdapter(posts, this, mapType)
 

@@ -65,6 +65,7 @@ class PostAdapter(
                     Log.i(TAG, "onclick checked");
                     intent.putExtra("route_id", postItem.route.id)
                     intent.putExtra("post_id", postItem.id)
+                    intent.putExtra("map_type", mapType)
                     mContext.startActivity(intent)
                 }
                 likeBtn.setOnClickListener{ toggleLike(postItem, auth, db, binding) }
