@@ -57,10 +57,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
-        val user = auth.currentUser
 
         enableEventListeners()
-        // Recycler View
         postRecView = binding.postRecView
         postRecView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.swipeRefresh.isRefreshing = true
@@ -102,7 +100,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.userMenuBtn.setOnClickListener {
-            startActivity(Intent(this, UserEditActivity::class.java))
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra("profile_owner", auth.currentUser!!.email)
+            startActivity(intent)
         }
 
     }

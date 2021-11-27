@@ -63,4 +63,7 @@
     <string name="wrong_username_length">The username must be at least 6 characters long and must not exceed 20 characters.</string>
     <string name="user_created">User created!</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="profile">Profile</string>
+    <string name="map_was_deleted_error">This map has been deleted!</string>
+    <string name="insert_route_name">Please, insert a route name!</string>
 </resources>

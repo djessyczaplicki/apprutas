@@ -57,4 +57,7 @@
     <string name="wrong_username_length">El nombre de usuario tiene que ser de entre 6 a 20 carácteres.</string>
     <string name="edit_profile">Editar perfil</string>
     <string name="user_created">Usuario creado!</string>
+    <string name="profile">Perfil</string>
+    <string name="map_was_deleted_error">Este mapa ha sido borrado!</string>
+    <string name="insert_route_name">Por favor, introduzca un nombre para la ruta!</string>
 </resources>

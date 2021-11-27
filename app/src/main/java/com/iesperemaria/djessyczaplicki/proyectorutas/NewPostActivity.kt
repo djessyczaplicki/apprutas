@@ -3,6 +3,7 @@ package com.iesperemaria.djessyczaplicki.proyectorutas
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.Slide
@@ -101,6 +102,7 @@ class NewPostActivity : AppCompatActivity() {
             mapType = "satellite"
             mapFrag.mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
         }
+        binding.logo.setOnClickListener{ goToMainMenu() }
     }
 
 
@@ -166,6 +168,8 @@ class NewPostActivity : AppCompatActivity() {
             route.name = popupBinding.routeName.text.toString()
             route.length = popupBinding.routeLength.text.toString()
 
+            if (route.name.isBlank()) return@setOnClickListener Toast.makeText(this, getString(R.string.insert_route_name), Toast.LENGTH_SHORT).show()
+
             class CustomDialogFragment : DialogFragment() {
                 override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
                     return activity?.let {
@@ -219,6 +223,13 @@ class NewPostActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun goToMainMenu() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 
     fun onClickButtonAddCheckpoint(view: View) {

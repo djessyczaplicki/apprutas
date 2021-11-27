@@ -1,5 +1,6 @@
 package com.iesperemaria.djessyczaplicki.proyectorutas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ class LikesActivity : AppCompatActivity() {
         likesRecView = binding.likesRecView
         postId = intent.getStringExtra("postId") ?: ""
         db = FirebaseFirestore.getInstance()
+        binding.logo.setOnClickListener { goToMainMenu() }
         getUsersWhoLiked()
     }
 
@@ -29,17 +31,27 @@ class LikesActivity : AppCompatActivity() {
         db.collection("posts").document(postId)
             .get().addOnSuccessListener { doc ->
                 val usersEmailWhoLiked = doc.get("likes") as MutableList<String>
+                val orderedUsersEmailWhoLiked = mutableListOf<String>()
 
                 db.collection("users")
                     .get().addOnSuccessListener { documents ->
                         for (document in documents) {
-                            if (usersEmailWhoLiked.any{ it == document.id })
+                            if (usersEmailWhoLiked.any{ it == document.id }) {
                                 usersWhoLiked.add(document.getString("username") ?: "default")
+                                orderedUsersEmailWhoLiked.add(document.id)
+                            }
                         }
 
-                        likesAdapter = LikesAdapter(usersWhoLiked, this)
+                        likesAdapter = LikesAdapter(usersWhoLiked, orderedUsersEmailWhoLiked, this)
                         likesRecView.adapter = likesAdapter
                     }
             }
+    }
+
+    private fun goToMainMenu() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }

@@ -57,12 +57,16 @@ class UserEditActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener{
             val uUsername = binding.usernameEditText.text.toString() // new username
             // Check if the username is the same as the old one, or if the uUsername is valid
-            if (uUsername != username && (uUsername.isBlank() || uUsername.length < 6 || uUsername.length > 20 || checkUsername(uUsername)))
+            if (uUsername != username && (uUsername.isBlank() || checkUsername(uUsername)))
                 return@setOnClickListener Toast.makeText(
                     baseContext,
                     getString(R.string.invalid_username), Toast.LENGTH_SHORT
                 ).show()
-
+            if (uUsername.length < 6 || uUsername.length > 20)
+                return@setOnClickListener Toast.makeText(
+                    baseContext,
+                    getString(R.string.wrong_username_length), Toast.LENGTH_SHORT
+                ).show()
             db.collection("users").document(user?.email.toString())
                 .set(
                     hashMapOf(

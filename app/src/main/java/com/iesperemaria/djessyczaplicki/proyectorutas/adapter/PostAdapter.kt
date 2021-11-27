@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.iesperemaria.djessyczaplicki.proyectorutas.DynmapActivity
 import com.iesperemaria.djessyczaplicki.proyectorutas.LikesActivity
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
+import com.iesperemaria.djessyczaplicki.proyectorutas.UserProfileActivity
 import com.iesperemaria.djessyczaplicki.proyectorutas.animation.BounceInterpolator
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.PostItemBinding
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Post
@@ -51,6 +52,11 @@ class PostAdapter(
                 checkLikeState(postItem, auth, binding)
                 textViewRouteName.text = postItem.route.name
                 textViewUser.text = mContext.getString(R.string.from_user, postItem.ownerUsername)
+                textViewUser.setOnClickListener {
+                    val intent = Intent(mContext, UserProfileActivity::class.java)
+                    intent.putExtra("profile_owner", postItem.owner)
+                    mContext.startActivity(intent)
+                }
                 Glide.with(mContext).load(postItem.route.getStaticMapUrl(mapType, mContext.getString(R.string.google_maps_key))).into(mapImage)
                 textViewLength.text = postItem.route.length
                 dateTextView.text = postItem.date

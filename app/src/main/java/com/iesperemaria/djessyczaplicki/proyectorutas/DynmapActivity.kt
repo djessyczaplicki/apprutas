@@ -2,9 +2,11 @@ package com.iesperemaria.djessyczaplicki.proyectorutas
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.maps.GoogleMap
@@ -40,8 +42,9 @@ class DynmapActivity : AppCompatActivity() {
         var routeOwner : String
 
         db.collection("routes").document(routeId).get().addOnSuccessListener { doc ->
+            if (doc.get("name") == null) return@addOnSuccessListener showMapWasDeletedError()
             routeOwner = doc.get("user") as String? ?: "default"
-            val name = doc.get("name") as String
+            val name = doc.get("name") as String? ?: "default"
             val color = (doc.get("color") as Long).toInt()
             val cordsList = doc.get("cords") as ArrayList<HashMap<String,Double>>
             val cords = mutableListOf<LatLng>()
@@ -53,10 +56,15 @@ class DynmapActivity : AppCompatActivity() {
             route = Route(name = name,color = color,newCords = cords, id = id)
             createMapFragment(route)
             mapFrag.mapType = mapType
+            binding.mapName.text = route.name
             if (routeOwner == auth.currentUser?.email)
                 showDeleteBtn()
         }
 
+    }
+
+    private fun showMapWasDeletedError() {
+        Toast.makeText(this, getString(R.string.map_was_deleted_error), Toast.LENGTH_LONG).show()
     }
 
     private fun enableEventListeners() {
@@ -69,6 +77,8 @@ class DynmapActivity : AppCompatActivity() {
         binding.mapTypeSat.setOnClickListener {
             mapFrag.mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
         }
+
+        binding.logo.setOnClickListener{ goToMainMenu() }
     }
 
     private fun showDeleteBtn() {
@@ -107,5 +117,12 @@ class DynmapActivity : AppCompatActivity() {
         mapFragment.getMapAsync(mapFrag)
         mapFrag.addRoute(route)
         enableEventListeners()
+    }
+
+    private fun goToMainMenu() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 }
