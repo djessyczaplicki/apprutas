@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -18,7 +17,7 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignInBinding.inflate(layoutInflater);
+        binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -27,7 +26,7 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
-    public fun enableEventListeners() {
+    private fun enableEventListeners() {
         binding.signInButton.setOnClickListener {
             val email = binding.signInEmail.text.toString()
             val pwd = binding.signInPwd.text.toString()
@@ -48,7 +47,7 @@ class SignInActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if(currentUser != null){
-            reload();
+            reload()
         }
     }
 
@@ -58,7 +57,6 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
                     reload()
                 } else {
                     // If sign in fails, display a message to the user.

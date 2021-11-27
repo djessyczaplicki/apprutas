@@ -1,37 +1,33 @@
 <resources>
-    <string name="app_name">App Rutas</string>
-    <string name="title_activity_maps">MapsActivity</string>
-    <string name="title_activity_main">Main Menu</string>
-    <string name="sign_in_pwd">Contraseña</string>
-    <string name="sign_in_email">Correo</string>
-    <string name="sign_in_button">Entrar</string>
-    <string name="username">username</string>
+    <string name="app_name" translatable="false">App Rutas</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
+    <string name="title_activity_main" translatable="false">Main Menu</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="username">Username</string>
     <string name="route_name">Route Name</string>
-    <string name="plus_sign">+</string>
+    <string name="plus_sign" translatable="false">+</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="password">Password</string>
-    <string name="volver">Volver</string>
+    <string name="go_back">Go back</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="logout">Logout</string>
-    <string name="routemap">RouteMap</string>
-    <string name="activity_user_phone">Teléfono</string>
-    <string name="nombre">Nombre</string>
-    <string name="apellido1">Apellido1</string>
-    <string name="apellido2">Apellido2</string>
-    <string name="nombre_de_usuario">Nombre de usuario</string>
-    <string name="address">Dirección</string>
-    <string name="guardar">Guardar</string>
-    <string name="obtener">Obtener</string>
-    <string name="borrar">Borrar Datos</string>
-    <string name="fecha_de_nacimiento">Fecha de nacimiento</string>
-    <string name="usuario">Usuario</string>
+    <string name="activity_user_phone">Phone</string>
+    <string name="name">First Name</string>
+    <string name="surname">Surname</string>
+    <string name="surname2">Surname2</string>
+    <string name="save">Save</string>
+    <string name="get">Get</string>
     <string name="send">Send</string>
-    <string name="from_user">from: User</string>
+    <string name="from_default">from: User</string>
+    <string name="from_user">from: %1$s</string>
     <string name="submit">Submit</string>
-    <string name="like">Like</string>
+    <plurals name="like">
+        <item quantity="one">%1$d Like</item>
+        <item quantity="other">%1$d Likes</item>
+    </plurals>
     <string name="loading_error">Couldn\'t update data, double check if you have connection.</string>
-    <string name="likes_count_default">0 likes</string>
+    <string name="likes_count_default">0 Likes</string>
     <string name="remove_post">Remove post</string>
     <string name="new_post">New Post</string>
     <string name="user">User</string>
@@ -51,14 +47,20 @@
     <string name="confirm">Yes</string>
     <string name="route_color">Route Color</string>
     <string name="route_time">Travel Time</string>
-    <string name="accept">Choose</string>
     <string name="chose">Chose</string>
     <string name="no_route_error">You have to create a route first!</string>
-    <string name="route_length">00:00</string>
-    <string name="date_default">21/11/2021</string>
+    <string name="route_length" translatable="false">00:00</string>
+    <string name="date_default" translatable="false">21/11/2021</string>
     <string name="invalid_username">The introduced username is empty or already in use.</string>
-    <string name="invalid_password">The introduces password is invalid, it must be at least 6 characters long.</string>
+    <string name="invalid_password">The introduced password is invalid, it must be between 6 and 20 characters long.</string>
     <string name="invalid_email">The introduced email is invalid.</string>
     <string name="non_matching_password">Passwords do not match.</string>
     <string name="already_used_email">This email is already in use, try signing in instead.</string>
+    <string name="logo" translatable="false">logo</string>
+    <string name="register_title">Register</string>
+    <string name="people_who_liked_this_post">People who liked this post:</string>
+    <string name="add_checkpoint">Add Checkpoint</string>
+    <string name="wrong_username_length">The username must be at least 6 characters long and must not exceed 20 characters.</string>
+    <string name="user_created">User created!</string>
+    <string name="edit_profile">Edit profile</string>
 </resources>

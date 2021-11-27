@@ -64,12 +64,16 @@ class RegisterActivity : AppCompatActivity() {
                     baseContext,
                     getString(R.string.non_matching_password), Toast.LENGTH_SHORT
                 ).show()
-            if (uUsername.isEmpty() || uUsername.isBlank() || checkUsername(uUsername))
+            if (uUsername.isBlank() || checkUsername(uUsername))
                 return@setOnClickListener Toast.makeText(
                     baseContext,
                     getString(R.string.invalid_username), Toast.LENGTH_SHORT
                 ).show()
-
+            if (uUsername.length < 6 || uUsername.length > 20)
+                return@setOnClickListener Toast.makeText(
+                    baseContext,
+                    getString(R.string.wrong_username_length), Toast.LENGTH_SHORT
+                ).show()
             // No errors ->
             register(uEmail, uPassword)
         }
@@ -124,7 +128,7 @@ class RegisterActivity : AppCompatActivity() {
                     "surname2" to binding.surname2EditText.text.toString()
                 )
             ).addOnSuccessListener {
-                Toast.makeText(this, "Usuario Creado.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.user_created), Toast.LENGTH_SHORT).show()
                 reload()
             }.addOnFailureListener {
                 Toast.makeText(this, "Error: $it", Toast.LENGTH_SHORT).show()

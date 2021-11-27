@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LikesActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:theme="@style/Widget.Design.AppBarLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/dark_snow">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="30dp"
+
+                android:backgroundTint="@color/dark_snow"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo" />
+
+        </Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_snow"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:text="@string/people_who_liked_this_post"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/likesRecView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:background="@color/snow"
+        app:spanCount="2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

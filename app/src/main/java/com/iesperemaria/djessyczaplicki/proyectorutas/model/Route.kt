@@ -33,7 +33,6 @@ class Route(
     private var polylines : MutableList<Polyline> = mutableListOf()
     private var markers: MutableList<Marker> = mutableListOf()
     var lastMarkerPos: LatLng? = null
-    var lastId: Int = -1
 
     init {
         if (map != null) addToMap(map)
@@ -80,7 +79,6 @@ class Route(
     }
 
     fun addCords(newCords: MutableList<LatLng>) {
-        lastId++
         cords.addAll(newCords)
         polylineOptions.addAll(newCords)
         removePolyFromAllMaps(gmaps)
@@ -105,13 +103,8 @@ class Route(
     }
 
     fun removeCordsAt(index: Int) {
-        Log.i("RemovedCord", cords.removeAt(index).toString())
-
-        Log.i("---", cords.size.toString())
-        for (cord in cords) {
-            Log.i("Cords", cords.toString())
-        }
-        Log.i("---", "-----")
+        val c =  cords.removeAt(index)
+        Log.i("RemovedCord", c.toString())
         reloadPolylineOptions()
     }
 

@@ -1,9 +1,7 @@
 package com.iesperemaria.djessyczaplicki.proyectorutas.adapter
 
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -11,19 +9,17 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.iesperemaria.djessyczaplicki.proyectorutas.DynmapActivity
+import com.iesperemaria.djessyczaplicki.proyectorutas.LikesActivity
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
 import com.iesperemaria.djessyczaplicki.proyectorutas.animation.BounceInterpolator
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.PostItemBinding
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Post
-import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 
 class PostAdapter(
-    var postList: MutableList<Post>,
+    private var postList: MutableList<Post>,
     private val mContext: Context,
     private val mapType: String
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
@@ -46,8 +42,7 @@ class PostAdapter(
         private val binding : PostItemBinding,
         private val mContext: Context
     ) : RecyclerView.ViewHolder(binding.root) {
-        val TAG = "PostAdapterViewHolder"
-        var isFirstTime = true
+        private var isFirstTime = true
         fun bind( postItem: Post, mapType: String) {
             with(binding) {
                 val auth = FirebaseAuth.getInstance()
@@ -55,14 +50,13 @@ class PostAdapter(
 
                 checkLikeState(postItem, auth, binding)
                 textViewRouteName.text = postItem.route.name
-                textViewUser.text = "from: ${postItem.ownerUsername}"
+                textViewUser.text = mContext.getString(R.string.from_user, postItem.ownerUsername)
                 Glide.with(mContext).load(postItem.route.getStaticMapUrl(mapType, mContext.getString(R.string.google_maps_key))).into(mapImage)
                 textViewLength.text = postItem.route.length
                 dateTextView.text = postItem.date
-
+                if (adapterPosition == 0) binding.root.setPadding(0,0,0,5)
                 mapImage.setOnClickListener{
                     val intent = Intent(mContext, DynmapActivity::class.java)
-                    Log.i(TAG, "onclick checked");
                     intent.putExtra("route_id", postItem.route.id)
                     intent.putExtra("post_id", postItem.id)
                     intent.putExtra("map_type", mapType)
@@ -71,7 +65,11 @@ class PostAdapter(
                 likeBtn.setOnClickListener{ toggleLike(postItem, auth, db, binding) }
 //                map = postItem.mMap
 //                createMapFragment(binding, postItem)
-
+                likeCounterTextView.setOnClickListener {
+                    val intent = Intent(mContext, LikesActivity::class.java)
+                    intent.putExtra("postId", postItem.id)
+                    mContext.startActivity(intent)
+                }
 
             }
         }
@@ -94,7 +92,7 @@ class PostAdapter(
                     likeBtn.setImageResource(R.drawable.ic_action_empty_heart)
                     if (!isFirstTime) likeBtn.animation = animation
                 }
-                likeCounterTextView.text = "${postItem.likes.size} likes"
+                likeCounterTextView.text = String.format(mContext.resources.getQuantityString(R.plurals.like, postItem.likes.count()), postItem.likes.count())
                 isFirstTime = false
             }
 

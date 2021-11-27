@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".LikesActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserProfileActivity"
             android:exported="false" />
         <activity

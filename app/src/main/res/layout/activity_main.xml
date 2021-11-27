@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/french_bistre"
+    android:background="@color/dark_snow"
     tools:context=".MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="60dp">
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,12 +21,15 @@
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_constraintTop_toTopOf="parent"
-                android:theme="@style/Widget.Design.AppBarLayout">
+                android:backgroundTint="@color/dark_snow"
+                android:theme="@style/Widget.Design.AppBarLayout"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:backgroundTint="@color/dark_snow"
+                    android:elevation="7dp"
                     app:layout_scrollFlags="scroll|enterAlways">
 
                     <ImageView
@@ -33,172 +37,187 @@
                         android:layout_height="match_parent"
 
                         android:layout_marginHorizontal="30dp"
+                        android:backgroundTint="@color/dark_snow"
                         android:contentDescription="@string/app_name"
                         android:scaleType="centerInside"
-                        android:src="@drawable/logo_white" />
+                        android:src="@drawable/logo" />
 
                     <LinearLayout
                         android:id="@+id/mapTypeButton"
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="end"
-                        android:layout_marginEnd="30dp"
                         android:layout_marginVertical="5dp"
+                        android:layout_marginEnd="30dp"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:paddingVertical="5dp"
                             android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.5"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_action_map"
+                            android:backgroundTint="@color/charcoal"
                             android:contentDescription="@string/delete_post"
-                            android:backgroundTint="@color/charcoal"/>
+                            android:paddingVertical="5dp"
+                            android:src="@drawable/ic_action_map" />
+
                         <TextView
-                            android:paddingHorizontal="3dp"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/charcoal"
                             android:gravity="center_vertical"
-                            android:text="@string/map_type"
-                            android:backgroundTint="@color/charcoal"/>
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/map_type" />
                     </LinearLayout>
                 </Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/loadingPanel"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:gravity="center_horizontal"-->
-<!--                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
 
-<!--                <ProgressBar-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="40dp"-->
-<!--                    android:indeterminate="true"-->
-<!--                    android:progressTint="@color/white" />-->
-<!--            </RelativeLayout>-->
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/postRecView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postRecView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <LinearLayout
-        android:orientation="horizontal"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/charcoal"
-        android:id="@+id/bottom_navigation"
+        android:baselineAligned="false"
+        android:paddingVertical="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:baselineAligned="false">
-        <LinearLayout
-            android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/logoutMenuBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="30dp"
-            android:id="@+id/logoutMenuBtn"
-            android:gravity="center">
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@id/newPostMenuBtn"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_action_exit"/>
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_action_exit"
+                app:layout_constraintBottom_toTopOf="@id/logoutMenuTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
+                android:id="@+id/logoutMenuTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:text="@string/logout"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
+                android:textAlignment="center"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/newPostMenuBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="30dp"
-            android:id="@+id/newPostMenuBtn">
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toStartOf="@id/userMenuBtn"
+            app:layout_constraintStart_toEndOf="@id/logoutMenuBtn">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_action_add"/>
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_action_add"
+                app:layout_constraintBottom_toTopOf="@id/newPostMenuTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/newPostMenuTxt"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:text="@string/new_post"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
+                android:textAlignment="center"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/userMenuBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="30dp"
-            android:id="@+id/userMenuBtn">
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/newPostMenuBtn">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_action_user"/>
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_action_user"
+                app:layout_constraintBottom_toTopOf="@id/userMenuTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
+                android:id="@+id/userMenuTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:text="@string/user"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
+
+                android:textAlignment="center"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--        <Button-->
-<!--            android:id="@+id/signOutButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="start"-->
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:text="@string/logout" />-->
+    <!--        <Button-->
+    <!--            android:id="@+id/signOutButton"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="start"-->
+    <!--            android:layout_marginStart="20dp"-->
+    <!--            android:layout_marginEnd="20dp"-->
+    <!--            android:text="@string/logout" />-->
 
-<!--        <Button-->
-<!--            android:id="@+id/buttonNewPost"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:background="@color/charcoal"-->
-<!--            android:onClick="onClickButtonNewPost"-->
-<!--            android:text="@string/plus_sign" />-->
+    <!--        <Button-->
+    <!--            android:id="@+id/buttonNewPost"-->
+    <!--            android:layout_width="60dp"-->
+    <!--            android:layout_height="60dp"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:background="@color/charcoal"-->
+    <!--            android:onClick="onClickButtonNewPost"-->
+    <!--            android:text="@string/plus_sign" />-->
 
-<!--        <Button-->
-<!--            android:id="@+id/userButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:layout_gravity="end"-->
-<!--            android:drawableTop="@drawable/user"-->
+    <!--        <Button-->
+    <!--            android:id="@+id/userButton"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="48dp"-->
+    <!--            android:layout_gravity="end"-->
+    <!--            android:drawableTop="@drawable/user"-->
 
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:text="@string/usuario" />-->
+    <!--            android:layout_marginStart="20dp"-->
+    <!--            android:layout_marginEnd="20dp"-->
+    <!--            android:text="@string/usuario" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

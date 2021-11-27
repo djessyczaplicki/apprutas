@@ -2,18 +2,14 @@ package com.iesperemaria.djessyczaplicki.proyectorutas
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -2,10 +2,8 @@ package com.iesperemaria.djessyczaplicki.proyectorutas.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +11,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.iesperemaria.djessyczaplicki.proyectorutas.R
 import com.iesperemaria.djessyczaplicki.proyectorutas.databinding.CordsItemBinding
 import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
-import java.util.*
 
 
 class CordsAdapter(
@@ -40,7 +37,7 @@ class CordsAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(cords: LatLng, adapter: CordsAdapter) {
             with(binding) {
-                latlng.text = cords.toString() + " [" + adapter.route.lastId + "]"
+                latlng.text = "$cords [${adapterPosition+1}]"
                 cardView.setOnClickListener {
                     if (adapter.route.lastMarkerPos == cords) {
                         adapter.route.removeAllMarkers()

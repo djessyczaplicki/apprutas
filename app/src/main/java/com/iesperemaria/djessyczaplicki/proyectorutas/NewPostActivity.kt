@@ -3,13 +3,11 @@ package com.iesperemaria.djessyczaplicki.proyectorutas
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.transition.Fade
 import android.transition.Slide
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -32,6 +30,10 @@ import com.iesperemaria.djessyczaplicki.proyectorutas.model.Route
 import java.text.SimpleDateFormat
 import java.util.*
 import yuku.ambilwarna.AmbilWarnaDialog
+
+
+
+
 
 
 class NewPostActivity : AppCompatActivity() {
@@ -135,8 +137,10 @@ class NewPostActivity : AppCompatActivity() {
             popupBinding.routeName.setText(route.name)
         if (route.length != Route.DEFAULT_LENGTH)
             popupBinding.routeLength.setText(route.length)
-        Glide.with(this).load(route.getStaticMapUrl(mapType.toString(), getString(R.string.google_maps_key))).into(popupBinding.mapImage)
+        Glide.with(this).load(route.getStaticMapUrl(mapType, getString(R.string.google_maps_key))).into(popupBinding.mapImage)
         // popupBinding.routeColor.backgroundTintList = ColorStateList.valueOf(route.color)
+
+
 
         // to preserve the route values
         popupWindow.setOnDismissListener {
@@ -150,7 +154,7 @@ class NewPostActivity : AppCompatActivity() {
                 override fun onOk(dialog: AmbilWarnaDialog, color: Int) {
                     // btnRouteColor.backgroundTintList = ColorStateList.valueOf(color)
                     route.setRouteColor(color)
-                    Glide.with(this@NewPostActivity).load(route.getStaticMapUrl(mapType.toString(), getString(R.string.google_maps_key))).into(popupBinding.mapImage)
+                    Glide.with(this@NewPostActivity).load(route.getStaticMapUrl(mapType, getString(R.string.google_maps_key))).into(popupBinding.mapImage)
                 }
 
                 override fun onCancel(dialog: AmbilWarnaDialog) {
@@ -219,10 +223,6 @@ class NewPostActivity : AppCompatActivity() {
 
     fun onClickButtonAddCheckpoint(view: View) {
         mapFrag.addCheckpoint(cordsRecView.adapter!!)
-    }
-
-    fun onClickButtonAddMarker(view: View) {
-        mapFrag.addMarker()
     }
 
 

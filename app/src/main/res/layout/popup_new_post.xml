@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/french_bistre"
+        app:cardBackgroundColor="@color/snow"
         app:cardCornerRadius="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
                 android:id="@+id/mapImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:contentDescription="@string/routemap"
+                android:contentDescription="@string/map"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
                 android:id="@+id/routeLength"
                 style="@style/EditText"
                 android:theme="@style/EditText"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="48dp"
                 android:layout_marginVertical="10dp"
                 android:hint="@string/route_length"
@@ -59,7 +59,7 @@
 
             <Button
                 android:id="@+id/routeColor"
-                android:layout_width="140dp"
+                android:layout_width="190dp"
                 android:layout_height="48dp"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/round_border"

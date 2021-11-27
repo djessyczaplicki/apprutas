@@ -9,7 +9,8 @@
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/round_rect.xml" value="0.19780701754385965" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/drawable/thick_grey_border.xml" value="0.403125" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/actividty_main.xml" value="0.21875" />
-        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_dynmap.xml" value="0.2" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_dynmap.xml" value="0.25" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_likes.xml" value="0.38697916666666665" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_map.xml" value="0.18903508771929825" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_maps.xml" value="0.21875" />
@@ -24,7 +25,8 @@
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/activity_user_profile.xml" value="0.38697916666666665" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/cords_item.xml" value="0.19427083333333334" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/fragment_maps.xml" value="0.18903508771929825" />
-        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/popup_new_post.xml" value="0.22760416666666666" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/like_item.xml" value="0.33" />
+        <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/popup_new_post.xml" value="0.25" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/layout/post_item.xml" value="0.33" />
         <entry key="..\:/Programacion Multiplataforma/Tema 2/ProyectoRutas/app/src/main/res/menu/navigation_menu.xml" value="0.19270833333333334" />
       </map>

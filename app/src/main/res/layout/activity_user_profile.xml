@@ -1,9 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UserProfileActivity"
+    android:background="@color/snow">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:theme="@style/Widget.Design.AppBarLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/dark_snow"
+            android:elevation="7dp">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="30dp"
+
+                android:backgroundTint="@color/dark_snow"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo" />
+
+            <LinearLayout
+                android:id="@+id/editProfileBtn"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginVertical="5dp"
+                android:layout_marginEnd="30dp"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:backgroundTint="@color/charcoal"
+                    android:contentDescription="@string/edit_profile"
+                    android:paddingVertical="5dp"
+                    android:src="@drawable/ic_action_user" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/charcoal"
+                    android:gravity="center_vertical"
+                    android:text="@string/edit_profile" />
+            </LinearLayout>
+
+        </Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/snow"
+        android:padding="3dp"
+        android:elevation="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

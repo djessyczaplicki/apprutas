@@ -8,12 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <!-- Custom -->
-    <color name="charcoal">#FF2A3D45</color>
-    <color name="french_bistre">#FF7A6C5D</color>
+    <color name="dark_snow">#FFEFEFEF</color>
+    <color name="charcoal">#425D68</color>
+    <color name="snow">#FFFFFAFA</color>
     <color name="old_rose">#FFC17C74</color>
-    <color name="middle_blue_green">#FF84DCC6</color>
+    <color name="middle_blue_green">#49BA68</color>
     <color name="middle_blue_purple">#FF8D86C9</color>
     <color name="dark_blue_purple">#FF7A72C0</color>
+    <color name="light_grey_tran">#F7D8DCD9</color>
     <color name="light_grey">#FFAEAEAE</color>
     <color name="grey">#FF454545</color>
     <color name="dark_grey">#323232</color>

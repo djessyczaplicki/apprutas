@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ProyectoRutas" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ProyectoRutasMat" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,18 +14,31 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.AppCompat.NoActionBar" parent="Theme.Design.NoActionBar">
+        <item name="editTextStyle">@style/EditText</item>
+        <item name="buttonStyle">@style/Button</item>
+    </style>
+
     <style name="RoundCorner" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">30dp</item>
         <item name="color">@color/white</item>
     </style>
 
-    <style name="goodEditText" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColorHint">@color/light_grey</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/grey</item>
     </style>
 
     <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/round_rect</item>
+        <item name="android:backgroundTint">@color/light_grey_tran</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
+    </style>
+
+    <style name="EditText2" parent="Widget.AppCompat.EditText">
         <item name="android:backgroundTintMode">multiply</item>
         <item name="android:background">@drawable/grey_border</item>
         <item name="android:backgroundTint">@color/old_rose</item>

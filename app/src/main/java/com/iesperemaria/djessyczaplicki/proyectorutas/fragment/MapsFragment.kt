@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,14 +33,11 @@ class MapsFragment(
     private val LOCATION_PERMISSION_REQUEST_CODE = 0
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
-    companion object {
-        const val REQUEST_CODE_LOCATION = 0
-    }
 
     private val TAG = "MapsFragment"
     private var mLocationPermissionsGranted = false
     var newRoute = Route()
-    val routes : MutableList<Route> = mutableListOf()
+    private val routes : MutableList<Route> = mutableListOf()
     var mapType: String? = null
 
     lateinit var mMap : GoogleMap
@@ -58,10 +54,8 @@ class MapsFragment(
     override fun onMapReady(googleMap: GoogleMap) {
         Log.i(TAG, "Map is ready!")
         mMap = googleMap
-//        createMarker()
         newRoute.addToMap(mMap)
         mMap.mapType = getMapType()
-//        createPolylines()
         getLocationPermission()
         var wasCameraSet = false
         if (routes.isNotEmpty()) {
@@ -98,7 +92,6 @@ class MapsFragment(
             .addOnSuccessListener { location : Location ->
                 newRoute.addCords(mutableListOf(LatLng(location.latitude, location.longitude)))
                 adapter.notifyItemInserted(newRoute.cords.size-1)
-                Toast.makeText(mContext, newRoute.cords.size.toString(), Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -172,7 +165,7 @@ class MapsFragment(
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        mLocationPermissionsGranted = false;
+        mLocationPermissionsGranted = false
 
         when(requestCode) {
             LOCATION_PERMISSION_REQUEST_CODE -> {

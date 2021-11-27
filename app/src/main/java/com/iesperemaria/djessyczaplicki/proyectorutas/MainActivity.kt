@@ -165,12 +165,16 @@ class MainActivity : AppCompatActivity() {
                                     val email = doc.id
                                     val username = doc.getString("username") ?: ""
                                     val name = doc.getString("name") ?: ""
+                                    val surname = doc.getString("surname") ?: ""
+                                    val surname2 = doc.getString("surname2") ?: ""
                                     val mapType = doc.get("mapType") as String? ?: "roadmap"
                                     users.add(
                                         User(
                                             email,
                                             username,
                                             name,
+                                            surname,
+                                            surname2,
                                             mapType
                                         )
                                     )
